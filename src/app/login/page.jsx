@@ -5,6 +5,11 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { BiSolidUser } from "react-icons/bi";
 import { GiExitDoor } from "react-icons/gi";
 
+
+
+
+
+
 function Login() {
   return (
     <div>
@@ -23,25 +28,23 @@ function Login() {
             <h1 className=''>VaRziK</h1>
           </div>
 
-          <div className='flex flex-col mb-5 vazir text-gray-500'>
+          <div className='flex flex-col mb-5 vazir '>
 
-            <div className='flex justify-center items-center'>
+            <div className='flex justify-center items-center '>
               <input type='text' placeholder='نام کاربری
-' className='text-center text-xl  border border-t-0 border-r-0 border-l-0 border border-b-1 w-64 text-right mb-5'>
-              </input>
-              <span className='text-2xl text-xstext-gray-600 pb-5 pl-2'><BiSolidUser /></span>
+' className='text-xl  border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-600 w-64 text-right mb-5 ' />
+
+              <span className='text-2xl text-gray-600 pb-5 pl-2'><BiSolidUser /></span>
             </div>
 
 
-            <div className='flex justify-center items-center '>ّ
+            <div className='flex justify-center items-center '>
 
-              <input type='text' placeholder=' رمز ورود' className='text-center text-xl  border border-t-0 border-r-0 border-l-0 border border-b-1 w-64 text-right m-1 pr-5
-             hover:transition duration-300 ease-in-out' >
-
+              <input type='text' placeholder=' رمز ورود' className=' text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-600 w-64 text-right m-1 pr-5 ' />
 
 
-              </input>
-              <span className='text-lg text-3xl text-gray-600 pl-2'> <RiLockPasswordLine />
+
+              <span className='text-lg pl-2 text-gray-600'> <RiLockPasswordLine />
               </span>
 
 
@@ -50,15 +53,23 @@ function Login() {
           </div>
 
           <div className='relative hover:transition duration-300 ease-in-out'>
-            <span className='absolute left-4 top-11 text-4xl text-white '><GiExitDoor /></span>
-            <button className='border border-none w-52 h-16 rounded-full text-2xl vazir text-white h-14 bg-gradient-to-r from-purple-500 to-pink-500 mt-9  '>ورود</button>
+            <span className='absolute left-4 top-12 text-4xl text-white '><GiExitDoor /></span>
+            <button className='border border-none w-52 h-16 rounded-full text-2xl vazir text-white  bg-gradient-to-r from-purple-500 to-pink-500 mt-9 '>ورود</button>
 
-            <h3></h3>
+
           </div>
 
-          <div>
-            <i></i>
-            <i></i>
+          <div className='flex gap-8 absolute top-[40rem]
+           '>
+            <div className='text-4xl  from-purple-500 to-pink-500'>
+              <Image src="/images/in.png" width={50} height={50} />
+            </div>
+
+            <div className='text-blue-700 text-4xl bg-none '>
+
+              <Image className='w-[41px] h-[41px] rounded-lg m-1' src="/images/ttel.png" width={50} height={50} />
+            </div>
+
           </div>
 
         </div>
@@ -67,7 +78,7 @@ function Login() {
 
 
 
-    </div>
+    </div >
   )
 }
 
