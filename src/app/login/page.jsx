@@ -4,23 +4,23 @@ import styles from './style.module.css'
 import { RiLockPasswordLine } from "react-icons/ri";
 import { BiSolidUser } from "react-icons/bi";
 import { GiExitDoor } from "react-icons/gi";
-
-
+import { BsInstagram } from "react-icons/bs";
+import { SiTelegram } from "react-icons/si";
 
 
 
 
 function Login() {
   return (
-    <div>
+    <div className='flex flex-col items-center'>
 
-      <div className='relative '>
-        <Image className={`${styles.bgBackGround}  `} src="/images/45562.jpg"
+      <div className='relative  justify-center  '>
+        <Image className={`${styles.bgBackGround} `} src="/images/45562.jpg"
           height={10} width={500}
         />
       </div>
 
-      <div className='absolute top-28 right-18  '>
+      <div className='absolute top-28 right-18'>
 
         <div className='flex flex-col text-center justify-center items-center ml-10'>
 
@@ -32,19 +32,19 @@ function Login() {
 
             <div className='flex justify-center items-center '>
               <input type='text' placeholder='نام کاربری
-' className='text-xl  border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-600 w-64 text-right mb-5 ' />
+' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-600 w-64 text-right mb-5 ' />
 
-              <span className='text-2xl text-gray-600 pb-5 pl-2'><BiSolidUser /></span>
+              <span className='text-2xl text-gray-600 pr-3 pb-2'><BiSolidUser /></span>
             </div>
 
 
             <div className='flex justify-center items-center '>
 
-              <input type='text' placeholder=' رمز ورود' className=' text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-600 w-64 text-right m-1 pr-5 ' />
+              <input type='text' placeholder=' رمز ورود' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-600 w-64 text-right m-1 pr-5 ' />
 
 
 
-              <span className='text-lg pl-2 text-gray-600'> <RiLockPasswordLine />
+              <span className='text-lg pr-5 pt-3 text-gray-600'> <RiLockPasswordLine />
               </span>
 
 
@@ -59,15 +59,16 @@ function Login() {
 
           </div>
 
-          <div className='flex gap-8 absolute top-[40rem]
+          <div className='flex gap-3 absolute top-[33rem]
            '>
             <div className='text-4xl  from-purple-500 to-pink-500'>
-              <Image src="/images/in.png" width={50} height={50} />
+              <BsInstagram />
+              {/* <Image src="/images/in.png" width={50} height={50} /> */}
             </div>
 
             <div className='text-blue-700 text-4xl bg-none '>
-
-              <Image className='w-[41px] h-[41px] rounded-lg m-1' src="/images/ttel.png" width={50} height={50} />
+              <SiTelegram />
+              {/* <Image className='w-[41px] h-[41px] rounded-lg m-1' src="/images/ttel.png" width={50} height={50} /> */}
             </div>
 
           </div>
