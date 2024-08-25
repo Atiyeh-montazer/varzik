@@ -1,15 +1,11 @@
 import Image from 'next/image'
 import React from 'react'
 import styles from './style.module.css'
-import { RiLockPasswordLine } from "react-icons/ri";
-import { BiSolidUser } from "react-icons/bi";
 import { GiExitDoor } from "react-icons/gi";
 import { BsInstagram } from "react-icons/bs";
 import { SiTelegram } from "react-icons/si";
-
-
-
-
+import { MdEmail } from "react-icons/md";
+import { FaPhoneFlip } from "react-icons/fa6";
 function Login() {
   return (
     <div className='flex flex-col items-center'>
@@ -31,20 +27,19 @@ function Login() {
           <div className='flex flex-col mb-5 vazir '>
 
             <div className='flex justify-center items-center '>
-              <input type='text' placeholder='نام کاربری
-' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-600 w-64 text-right mb-5 ' />
+              <input type='text' placeholder='ایمیل' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-600 w-64 text-right mb-5 m-1' />
 
-              <span className='text-2xl text-gray-600 pr-3 pb-2'><BiSolidUser /></span>
+              <span className='text-2xl text-gray-600  pb-2'><MdEmail /></span>
             </div>
 
 
-            <div className='flex justify-center items-center '>
+            <div className='flex   items-center '>
 
-              <input type='text' placeholder=' رمز ورود' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-600 w-64 text-right m-1 pr-5 ' />
+              <input type='text' placeholder=' تلفن همراه' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-600 w-64 text-right m-3 ' />
 
 
 
-              <span className='text-lg pr-5 pt-3 text-gray-600'> <RiLockPasswordLine />
+              <span className='text-lg pr-5 pt-3 text-gray-600'> <FaPhoneFlip />
               </span>
 
 
@@ -63,12 +58,12 @@ function Login() {
            '>
             <div className='text-4xl  from-purple-500 to-pink-500'>
               <BsInstagram />
-              {/* <Image src="/images/in.png" width={50} height={50} /> */}
+
             </div>
 
-            <div className='text-blue-700 text-4xl bg-none '>
+            <div className='text-black-700 text-4xl bg-none '>
               <SiTelegram />
-              {/* <Image className='w-[41px] h-[41px] rounded-lg m-1' src="/images/ttel.png" width={50} height={50} /> */}
+
             </div>
 
           </div>
