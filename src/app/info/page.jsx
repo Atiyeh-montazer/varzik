@@ -149,6 +149,12 @@ function Info() {
                         </div> */}
                         <div className="mt-4 text-2xl font-bold text-gray-700 drop-shadow-lg">
                             قد خود را وارد کنید: <span className="">{Math.round(positionHeight * 2.5)}</span> سانتیمتر
+
+                            <form>
+                                <input type="range" name="amountRange" min="0" max="20" value="0" oninput="this.form.amountInput.value=this.value" />
+                                <input type="number" name="amountInput" min="0" max="20" value="0" oninput="this.form.amountRange.value=this.value" />
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -158,6 +164,7 @@ function Info() {
                     <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500 w-32 h-10 border border-x-4 rounded-full mr-3 mb-3'>بازگشت</button>
                     <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500 w-32 h-10 border border-x-4 rounded-full ml-3 mb-3'>بعدی</button>
                 </div>
+
 
             </div>
 
