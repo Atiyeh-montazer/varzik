@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Header from '@/components/header/Header'
 
 
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="max-w-[430px] min-w-[350px] mx-auto">
+          <Header />
           {children}
         </div>
       </body>
