@@ -7,6 +7,7 @@ import styles from './style.module.css'
 import { useState } from 'react';
 import { MdOutlineWoman2 } from "react-icons/md";
 import { IoManSharp } from "react-icons/io5";
+
 function slider() {
 
     // State برای هر اسلایدر
@@ -29,6 +30,8 @@ function slider() {
 
 
     return (
+      
+
         <div className='flex flex-col justify-center items-center '>
             <div className='relative  justify-center  '>
                 <Image className={`${styles.bgBackGround}  `} src="/images/45562.jpg" height={10} width={500} />

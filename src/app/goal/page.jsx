@@ -1,6 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
 import styles from './style.module.css'
+// import Header from '@/components/header/Header'
+
 function goal() {
     return (
 
@@ -19,22 +21,22 @@ function goal() {
 
                 <div className='flex  flex-col mb-6 justify-center items-center'>
                     <div >
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border border-x-4 rounded-full  mb-3'>کاهش وزن و تناسب اندام</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full  mb-3'>کاهش وزن و تناسب اندام</button>
 
                     </div>
 
                     <div>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border border-x-4 rounded-full mb-3'>عضله‌سازی و قدرت</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full mb-3'>عضله‌سازی و قدرت</button>
 
                     </div>
 
                     <div>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border border-x-4 rounded-full mb-3'>فیتنس فانکشنال</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full mb-3'>فیتنس فانکشنال</button>
 
                     </div>
 
                     <div>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border border-x-4 rounded-full mb-3'>بهبود عملکرد ورزشی</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full mb-3'>بهبود عملکرد ورزشی</button>
 
                     </div>
 
@@ -44,15 +46,15 @@ function goal() {
 
                     <div className='flex  flex-col mb-6 justify-center items-center'>
 
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border border-x-4 rounded-full  mb-3'>مبتدی</button>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border border-x-4 rounded-full  mb-3'>متوسط</button>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border border-x-4 rounded-full  mb-3'>حرفه ای</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border-x-4 rounded-full  mb-3'>مبتدی</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full  mb-3'>متوسط</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full  mb-3'>حرفه ای</button>
 
                     </div>
 
-                    <div className='mt-[40px]'>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-32 h-10 border border-x-4 rounded-full mr-3 mb-3'>بازگشت</button>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-32 h-10 border border-x-4 rounded-full ml-3 mb-3'>بعدی</button>
+                    <div className='mt-[px]'>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-32 h-10  border-x-4 rounded-full mr-3 mb-3'>بازگشت</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-32 h-10  border-x-4 rounded-full ml-3 mb-3'>بعدی</button>
                     </div>
 
                 </div>
