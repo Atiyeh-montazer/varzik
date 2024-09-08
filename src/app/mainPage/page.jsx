@@ -63,7 +63,7 @@ function Mainpage() {
                         ))}
                     </Swiper> */}
 
-                    <Sliderphoto />
+        
 </div>
 
 
