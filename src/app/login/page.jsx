@@ -6,6 +6,7 @@ import { BsInstagram } from "react-icons/bs";
 import { SiTelegram } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneFlip } from "react-icons/fa6";
+import Link from 'next/link'
 function Login() {
   return (
     <div className='flex flex-col items-center'>
@@ -49,7 +50,14 @@ function Login() {
 
           <div className='relative hover:transition duration-300 ease-in-out'>
             <span className='absolute left-4 top-12 text-4xl text-white '><GiExitDoor /></span>
-            <button className='border border-none w-52 h-16 rounded-full text-2xl vazir text-white  bg-gradient-to-r from-purple-500 to-pink-500 mt-9 '>ورود</button>
+
+<Link href="/mainPage" >
+
+  <button className='border border-none w-52 h-16 rounded-full text-2xl vazir text-white  bg-gradient-to-r from-purple-500 to-pink-500 mt-9 '>ورود</button>
+ 
+</Link>
+
+           
 
 
           </div>

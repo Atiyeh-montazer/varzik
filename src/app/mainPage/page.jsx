@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Sliderphoto from '@/components/Sliderphoto'
 function Mainpage() {
 
-    const [isVisible, setIsVisible] = useState(true);  // حالت اولیه به صورت نمایان
+    const [isVisible, setIsVisible] = useState(false);  // حالت اولیه به صورت نمایان
 
     const toggleVisibility = () => {
         setIsVisible(!isVisible);  // تغییر حالت بین نمایش و مخفی
