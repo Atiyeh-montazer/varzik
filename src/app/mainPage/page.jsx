@@ -4,7 +4,7 @@ import styles from './style.module.css'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { SlArrowDown } from "react-icons/sl";
 import { useState } from 'react';
-
+import Sliderphoto from '@/components/Sliderphoto'
 function Mainpage() {
 
     const [isVisible, setIsVisible] = useState(true);  // حالت اولیه به صورت نمایان
@@ -12,7 +12,13 @@ function Mainpage() {
     const toggleVisibility = () => {
         setIsVisible(!isVisible);  // تغییر حالت بین نمایش و مخفی
     };
-
+    const images = [
+        '/images/45562.jpg',
+        '/images/slider1.jpg',
+        '/images/slider2.jpg',
+        '/images/slider3.jpg',
+        // تصاویر بیشتر اضافه کنید
+    ];
 
     return (
 
@@ -37,7 +43,28 @@ function Mainpage() {
                         <div className='text-2xl flex justify-end p-4'>
                             <GiHamburgerMenu onClick={toggleVisibility} className="cursor-pointer" />
                         </div>
+{/* end header  */}
 
+
+{/* start slid  */}
+
+<div>
+  {/* <Swiper
+                        modules={[Navigation, Pagination]}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        navigation
+                        pagination={{ clickable: true }}
+                    >
+                        {images.map((image, index) => (
+                            <SwiperSlide key={index}>
+                                <Image className={`${styles.bgBackGround}`} src={image} height={500} width={1440} alt={`slide-${index}`} />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper> */}
+
+                    <Sliderphoto />
+</div>
 
 
 {/* start side bar */}
