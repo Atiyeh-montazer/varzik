@@ -9,20 +9,29 @@ import Link from 'next/link';
 import { GoHomeFill } from "react-icons/go";
 import { MdDashboard } from "react-icons/md";
 import { FaChalkboardTeacher } from "react-icons/fa";
+import { FaClipboardList } from "react-icons/fa";
+import { BiSolidDish } from "react-icons/bi";
+import Trainning from "@/components/Trainning"
+import Diet from "@/components/Diet"
+import Coach from "@/components/Coach"
+
 function Mainpage() {
 
-    const [isVisible, setIsVisible] = useState(false);  // حالت اولیه به صورت نمایان
+    // const [isVisible, setIsVisible] = useState(false);  // حالت اولیه به صورت نمایان
 
-    const toggleVisibility = () => {
-        setIsVisible(!isVisible);  // تغییر حالت بین نمایش و مخفی
-    };
-    const images = [
-        '/images/45562.jpg',
-        '/images/slider1.jpg',
-        '/images/slider2.jpg',
-        '/images/slider3.jpg',
-        // تصاویر بیشتر اضافه کنید
-    ];
+    // const toggleVisibility = () => {
+    //     setIsVisible(!isVisible);  // تغییر حالت بین نمایش و مخفی
+    // };
+    // const images = [
+    //     '/images/45562.jpg',
+    //     '/images/slider1.jpg',
+    //     '/images/slider2.jpg',
+    //     '/images/slider3.jpg',
+    //     // تصاویر بیشتر اضافه کنید
+    // ];
+
+    const [activeComponent, setactiveComponent] = useState('trainning');
+
 
     return (
 
@@ -55,11 +64,17 @@ function Mainpage() {
                                 <h2> وزن:
                                     68</h2>
                             </div>
+
+
+
+
                             <div >
                                 <Link href="/login">
                                     <button className='hover:bg-gradient-to-r   w-32 h-11 border  focus:bg-pink-700  mt-4 text-white  border-x-4 rounded-full mr-3 mb-3'>خروج</button>
                                 </Link>
                             </div>
+
+
                         </div>
 
 
@@ -93,6 +108,7 @@ function Mainpage() {
                         </div>
 
 
+
                         {/* start side bar */}
                         {/* <div
                             className={`absolute right-0 top-0 w-[50%] h-screen flex flex-col justify-end bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-700 ease-in-out ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
@@ -123,8 +139,56 @@ function Mainpage() {
                         </div> */}
                         {/* end sidbar */}
 
+                        {/* start Article  */}
+                        <div>
 
 
+                            <div className=' w-32 h-32 rounded-full bg-white m-10'>
+                            </div>
+
+                            <div className=''>
+                                <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full mr-12'>پرونده پزشکی</button>
+                                <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full ml-3 '>ویرایش</button>
+                            </div>
+                            {/* start menu  */}
+
+                            <div className=' flex text-4xl mt-8 ml-20 gap-16  '>
+
+                                <button onClick={() => setactiveComponent('trainning')}>
+                                    <FaClipboardList className='hover:border-b-2   ' />
+                                </button>
+
+
+                                <button onClick={() => setactiveComponent('diet')}>
+                                    <BiSolidDish className='hover:border-b-2 
+                              ' />
+                                </button>
+
+
+                                <button>
+                                    <FaChalkboardTeacher onClick={() => setactiveComponent('coach')} className='hover:border-b-2   ' />
+                                </button>
+
+                            </div>
+
+                            <div>
+
+                                {activeComponent === 'trainning' && <Trainning />}
+                                {activeComponent === 'coach' && <Coach />}
+                                {activeComponent === 'diet' && <Diet />}
+
+                            </div>
+
+                            {/* end menu  */}
+                        </div>
+
+
+
+
+
+
+
+                        {/* end Article  */}
                     </div>
                     {/* en header */}
 

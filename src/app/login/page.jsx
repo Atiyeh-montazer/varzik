@@ -49,15 +49,15 @@ function Login() {
           </div>
 
           <div className='relative hover:transition duration-300 ease-in-out'>
-            <span className='absolute left-4 top-12 text-4xl text-white '><GiExitDoor /></span>
+            <span className='absolute left-4 top-6 text-2xl text-white '><GiExitDoor /></span>
 
-<Link href="/mainPage" >
+            <div >
+              <Link href="/mainPage">
+                <button className='hover:bg-gradient-to-r   w-32 h-11 border  focus:bg-pink-700  mt-4 text-white  border-x-4 rounded-full mr-3 mb-3'>ورود</button>
+              </Link>
+            </div>
 
-  <button className='border border-none w-52 h-16 rounded-full text-2xl vazir text-white  bg-gradient-to-r from-purple-500 to-pink-500 mt-9 '>ورود</button>
- 
-</Link>
 
-           
 
 
           </div>

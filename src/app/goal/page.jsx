@@ -48,19 +48,19 @@ function goal() {
 
                         <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10 border-x-4 rounded-full  mb-3'>مبتدی</button>
                         <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full  mb-3'>متوسط</button>
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-44 h-10  border-x-4 rounded-full  mb-3'>حرفه ای</button>
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300   border-x-4 rounded-full  mb-3'>حرفه ای</button>
 
                     </div>
 
                     <div className='mt-[px]'>
 
-                       <Link href="/mainPage">
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-32 h-10  border-x-4 rounded-full mr-3 mb-3'>بازگشت</button>
-                       </Link>
+                        <Link href="/mainPage">
+                            <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300   border-x-4 rounded-full mr-3 mb-3'>بازگشت</button>
+                        </Link>
 
 
-                       
-                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300 w-32 h-10  border-x-4 rounded-full ml-3 mb-3'>بعدی</button>
+
+                        <button className='hover:bg-gradient-to-r from-purple-500 to-pink-500  w-32 h-11 border  focus:bg-pink-700  focus:ring-violet-300   border-x-4 rounded-full ml-3 mb-3'>بعدی</button>
                     </div>
 
                 </div>
