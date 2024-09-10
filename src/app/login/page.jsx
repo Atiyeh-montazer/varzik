@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import React from 'react'
-import styles from './style.module.css'
 import { GiExitDoor } from "react-icons/gi";
 import { BsInstagram } from "react-icons/bs";
 import { SiTelegram } from "react-icons/si";
@@ -10,12 +9,6 @@ import Link from 'next/link'
 function Login() {
   return (
     <div className='flex flex-col items-center'>
-
-      <div className='relative  justify-center  '>
-        <Image className={`${styles.bgBackGround} `} src="/images/45562.jpg"
-          height={10} width={500}
-        />
-      </div>
 
       <div className='absolute top-28 right-18'>
 

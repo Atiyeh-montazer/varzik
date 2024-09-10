@@ -3,8 +3,8 @@
 import React from 'react'
 import { MdOutlineWoman2 } from "react-icons/md";
 import { IoManSharp } from "react-icons/io5";
-import Image from 'next/image';
-import styles from './style.module.css'
+
+
 
 import { useState } from 'react';
 
@@ -31,9 +31,6 @@ function Info() {
 
     return (
         <div className='flex flex-col justify-center items-center '>
-            <div className='relative  justify-center  '>
-                <Image className={`${styles.bgBackGround}  `} src="/images/45562.jpg" height={10} width={500} />
-            </div>
 
             <div className='absolute top-18 right-18'>
                 <div className='flex flex-col text-center justify-center items-center '>
@@ -72,13 +69,7 @@ function Info() {
                                 />
                             </div>
                         </div>
-                        {/* <div className="relative w-4/5 mt-2 flex justify-between text-gray-600 font-semibold">
-                            {Array.from({ length: 11 }).map((_, index) => (
-                                <span key={index} className="transform -translate-x-1/2">
-                                    {index * 10}
-                                </span>
-                            ))}
-                        </div> */}
+                       
                         <div className="mt-3 text-2xl font-bold text-gray-700 drop-shadow-lg">
                             وزن خود را وارد کنید: <span className=" ">{Math.round(positionWeight)}</span> کیلوگرم
                         </div>

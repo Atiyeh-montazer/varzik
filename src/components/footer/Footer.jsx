@@ -1,0 +1,35 @@
+import Link from "next/link"
+import { MdDashboard } from "react-icons/md";
+import { GoHomeFill } from "react-icons/go";
+import { FaChalkboardTeacher } from "react-icons/fa";
+
+function Footer() {
+    return (
+        <div className='bottom-0 left-0 z-50 bg-[#331832] shadow-2xl h-16 w-full  text-center '>
+            <div className='flex justify-center gap-24 mt-4 items-center text-center   '>
+
+                <Link href="/goal">
+                    <button >
+                        <MdDashboard className='text-white text-4xl' />
+                    </button>
+                </Link >
+
+                <Link href="/goal">
+                    <button>
+                        <GoHomeFill className='text-white text-4xl' />
+                    </button>
+                </Link>
+
+                <Link href="/goal">
+                    <button>
+                        <FaChalkboardTeacher className='text-white text-4xl' />
+                    </button>
+                </Link>
+
+            </div>
+
+        </div>
+    )
+}
+
+export default Footer

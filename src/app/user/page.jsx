@@ -1,6 +1,5 @@
 "use client"
 import Image from 'next/image'
-import styles from './style.module.css'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { SlArrowDown } from "react-icons/sl";
 import { useState } from 'react';
@@ -45,7 +44,7 @@ function Mainpage() {
 
                 </div>
                 <div className='relative   W-full '>
-                    <Image className={`${styles.bgBackGround}  `} src="/images/45562.jpg" height={500} width={1440} />
+                    <Image className="" src="/images/45562.jpg" height={500} width={1440} />
 
 
 
