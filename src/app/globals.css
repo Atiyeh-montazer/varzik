@@ -55,13 +55,3 @@
     font-family: 'vazir-f' !important;
 
 }
-
-.bgImage {
-    /* background: url('../../public/images/45562.jpg'); */
-    background-position-x: 99%;
-    background-size: 173% 100%;
-    background-repeat: no-repeat;
-    opacity: 0.55;
-    object-fit: cover;
-    z-index: -10;
-}
