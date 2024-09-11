@@ -2,12 +2,11 @@ import React from 'react'
 
 import Link from 'next/link'
 
-function goal() {
+function Edit() {
     return (
-
         <div className='flex flex-col justify-center items-center '>
             <div className='flex flex-col  absolute top-20 right-18'>
-                <div className='flex justify-center items-center mb-2 text-2xl text-gray-800 font-bold vazir'>
+                <div className='flex justify-center items-center mb-6 text-3xl text-gray-800 font-bold vazir'>
                     <h1>هدف خود را انتخاب کنید</h1>
                 </div>
 
@@ -33,32 +32,28 @@ function goal() {
 
                     </div>
 
-                    <div className='mb-6 mt-2 text-2xl text-gray-800 font-bold vazir'>
+                    <div className='mb-6 mt-4 text-3xl text-gray-800 font-bold vazir'>
                         <h1>سطح ورزشی خود را انتخاب کنید؟</h1>
                     </div>
 
                     <div className='flex  flex-col mb-6 justify-center items-center'>
 
-                        <button className='hover:bg-pink-700   w-44 h-11 border   focus:ring-violet-300  border-x-4 rounded-full  mb-2'>مبتدی</button>
+                        <button className='hover:bg-pink-700   w-44 h-11 border   focus:ring-violet-300  border-x-4 rounded-full  mb-3'>مبتدی</button>
                         <button className='hover:bg-pink-700    w-44 h-11 border    focus:ring-violet-300   border-x-4 rounded-full  mb-3'>متوسط</button>
                         <button className='hover:bg-pink-700   w-44 h-11 border    focus:ring-violet-300   border-x-4 rounded-full  '>حرفه ای</button>
 
                     </div>
+                    {/* 
+                    <div className='mb-8'>
 
-                    <div className='mb-8 flex justify-center '>
-
-                        <Link href="/info">
-                            <button className='hover:bg-pink-700 mt-1  w-32 h-11 border  border-x-4 rounded-full mr-5 flex justify-center items-center text-xl'>بازگشت</button>
+                        <Link href="/mainPage">
+                            <button className='hover:bg-pink-700  w-32 h-8 border    focus:ring-violet-300   border-x-4 rounded-full mr-3 mb-3'>بازگشت</button>
                         </Link>
 
 
 
-                        <Link href="/user">
-                            <button className='hover:bg-pink-700  mt-1  w-32 h-11 border  border-x-4 rounded-full mr-5 flex justify-center items-center text-xl'>ذخیره</button>
-                        </Link>
-
-
-                    </div>
+                        <button className='hover:bg-pink-700   w-32 h-8 border      border-x-4 rounded-full ml-3 mb-3'>بعدی</button>
+                    </div> */}
 
                 </div>
 
@@ -68,4 +63,4 @@ function goal() {
     )
 }
 
-export default goal
+export default Edit

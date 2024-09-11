@@ -12,28 +12,28 @@ function Login() {
 
       <div className='absolute top-28 right-18'>
 
-        <div className='flex flex-col text-center justify-center items-center ml-10'>
+        <div className='flex flex-col text-center justify-center items-center ml-10 mt-32'>
 
-          <div className='mb-16  text-3xl text-gray-700 font-bold vazir'>
+          <div className='mb-16  text-3xl text-gray-900 font-bold vazir'>
             <h1 className=''>VaRziK</h1>
           </div>
 
           <div className='flex flex-col mb-5 vazir '>
 
             <div className='flex justify-center items-center '>
-              <input type='text' placeholder='ایمیل' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-600 w-64 text-right mb-5 m-1' />
+              <input type='text' placeholder='ایمیل' className='outline-none   border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-800 w-64 text-right mb-5 m-1' />
 
-              <span className='text-2xl text-gray-600  pb-2'><MdEmail /></span>
+              <span className='text-2xl text-gray-800  pb-2'><MdEmail /></span>
             </div>
 
 
             <div className='flex   items-center '>
 
-              <input type='text' placeholder=' تلفن همراه' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-600 w-64 text-right m-3 ' />
+              <input type='text' placeholder=' تلفن همراه' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-800 w-64 text-right m-3 ' />
 
 
 
-              <span className='text-lg pr-5 pt-3 text-gray-600'> <FaPhoneFlip />
+              <span className='text-lg pr-5 pt-3 text-gray-00'> <FaPhoneFlip />
               </span>
 
 
@@ -55,14 +55,15 @@ function Login() {
 
           </div>
 
-          <div className='flex gap-3 absolute top-[33rem]
+          <div className='flex gap-5 absolute 
+        bottom-[-90px]
            '>
-            <div className='text-4xl  from-purple-500 to-pink-500'>
+            <div className='text-4xl text-gray-800'>
               <BsInstagram />
 
             </div>
 
-            <div className='text-black-700 text-4xl bg-none '>
+            <div className='text-gray-800 text-4xl bg-none  '>
               <SiTelegram />
 
             </div>

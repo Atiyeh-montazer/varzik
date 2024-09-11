@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import React from 'react'
 import EmblaCarousel from '@/components/embla-caousel/EmblaCarousel'
-import '@/components/embla-caousel/assets/css/base.css'
 import '@/components/embla-caousel/assets/css/sandbox.css'
 import '@/components/embla-caousel/assets/css/embla.css'
 

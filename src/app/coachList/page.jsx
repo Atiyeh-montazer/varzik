@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-functio coachList(){
+function coachList() {
     return (
         <div>
 
