@@ -2,11 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-function coachlist() {
-
-
-
-
+function Coachlist() {
     return (
         <div className=''>
             <div className='flex flex-wrap justify-center items-center gap-4'>
@@ -60,4 +56,4 @@ function coachlist() {
     )
 }
 
-export default coachlist
+export default Coachlist

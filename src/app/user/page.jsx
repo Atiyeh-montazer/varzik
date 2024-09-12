@@ -29,8 +29,11 @@ function Mainpage() {
                         </div>
 
                         <div className='flex justify-center'>
-                            <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full mr-12'>پرونده پزشکی</button>
+                            <Link href='/ medicalfile'>
+                              <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full mr-12'>پرونده پزشکی</button>
 
+                            </Link>
+                          
                             <Link href='/info'>
                                 <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full ml-3 '>ویرایش</button>
 
