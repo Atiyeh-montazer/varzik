@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Link from 'next/link'
+
 
 function Edit() {
     return (
@@ -43,17 +43,6 @@ function Edit() {
                         <button className='hover:bg-pink-700   w-44 h-11 border    focus:ring-violet-300   border-x-4 rounded-full  '>حرفه ای</button>
 
                     </div>
-                    {/* 
-                    <div className='mb-8'>
-
-                        <Link href="/mainPage">
-                            <button className='hover:bg-pink-700  w-32 h-8 border    focus:ring-violet-300   border-x-4 rounded-full mr-3 mb-3'>بازگشت</button>
-                        </Link>
-
-
-
-                        <button className='hover:bg-pink-700   w-32 h-8 border      border-x-4 rounded-full ml-3 mb-3'>بعدی</button>
-                    </div> */}
 
                 </div>
 

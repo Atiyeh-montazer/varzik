@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 function Header() {
     return (
-        <div className='top-0 left-0 z-50 bg-[#331832] shadow-2xl h-20 w-full  text-center '>
+        <div className='top-0 left-0 z-50 bg-[#331832] shadow-2xl w-full  text-center '>
 
             <div className='flex  justify-between items-center'>
                 <div className='bg-white w-16 h-16 rounded-full ml-4 mx-4'>

@@ -55,3 +55,7 @@
     font-family: 'vazir-f' !important;
 
 }
+
+.scroll-hidden {
+    scrollbar-width: none;
+}

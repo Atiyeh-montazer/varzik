@@ -20,17 +20,18 @@ function Mainpage() {
     const toggleVisibility = () => {
         setIsVisible(!isVisible);  // تغییر حالت بین نمایش و مخفی
     };
-    const images = [
-        '/images/45562.jpg',
-        '/images/slider1.jpg',
-        '/images/slider2.jpg',
-        '/images/slider3.jpg',
-        // تصاویر بیشتر اضافه کنید
-    ];
+
+
+    const slides1 = [
+        { id: 1, src: '/images/hadi-chopan.jpeg' },
+        { id: 2, src: '/images/hany-rambod.jpg' },
+        { id: 3, src: '/images/hany-rambod.jpg' },
+        { id: 1, src: '/images/hadi-chopan.jpeg' },
+    ]
 
     return (
         <div>
-            <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+            <EmblaCarousel slides={slides1} options={OPTIONS} />
         </div>
     )
 }

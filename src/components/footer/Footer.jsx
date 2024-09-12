@@ -10,7 +10,7 @@ function Footer() {
     const pathname = usePathname()
 
     return (
-        <div className='bottom-0 left-0 z-50 bg-[#331832] shadow-2xl h-16 w-full  text-center '>
+        <div className='bottom-0 left-0 z-50 bg-[#331832] shadow-2xl w-full  text-center '>
             <div className='flex justify-center gap-24 mt-4 items-center text-center   '>
 
                 {
@@ -22,7 +22,7 @@ function Footer() {
                             </button>
                         </Link >
                         :
-                        <Link href="/goal">
+                        <Link href="/user">
                             <button >
                                 <MdDashboard className='text-white text-4xl' />
                             </button>
@@ -36,7 +36,7 @@ function Footer() {
                     </button>
                 </Link>
 
-                <Link href="/goal">
+                <Link href="/coachlist">
                     <button>
                         <FaChalkboardTeacher className='text-white text-4xl' />
                     </button>
