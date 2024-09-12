@@ -29,7 +29,7 @@ function Mainpage() {
                         </div>
 
                         <div className='flex justify-center'>
-                            <Link href='/ medicalfile'>
+                            <Link href='/medicalfile'>
                               <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full mr-12'>پرونده پزشکی</button>
 
                             </Link>
