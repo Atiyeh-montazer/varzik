@@ -9,7 +9,7 @@ import { BiSolidDish } from "react-icons/bi";
 import Trainning from "@/components/Trainning"
 import Diet from "@/components/Diet"
 import Coach from "@/components/Coach"
-
+import Image from 'next/image';
 function Mainpage() {
 
     const [activeComponent, setactiveComponent] = useState('trainning');
@@ -24,6 +24,7 @@ function Mainpage() {
                     <div className='  '>
 
                         <div className=' w-32 h-32 rounded-full bg-white m-6'>
+                            <Image srce='/images/hadi-chopan.jpg'/>
                         </div>
 
                         <div className='flex justify-center'>
