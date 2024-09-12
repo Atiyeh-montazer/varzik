@@ -3,8 +3,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { GoHomeFill } from "react-icons/go";
-import { MdDashboard } from "react-icons/md";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDish } from "react-icons/bi";

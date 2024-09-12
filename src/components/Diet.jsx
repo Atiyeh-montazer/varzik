@@ -20,7 +20,7 @@ function Diet() {
                   
                   </a>
               </div>
-          <div class="w-48 pl-12 mt-5 ml-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+          <div class="w-48 pl-12 mt-5 ml-3 bg-yellow-300 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                   
                   <Link href="/plan">
                       <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">برنامه : ماه اول</h5>
