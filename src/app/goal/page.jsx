@@ -28,55 +28,7 @@ function Goal() {
 
 
                 <div className='flex  flex-col mb-6 justify-center items-center'>
-                    {/* <div >
-                        <button className='hover:bg-pink-700 w-44 h-11 border  border-x-4 rounded-full  mb-4'>کاهش وزن و تناسب اندام</button>
-
-
-
-                    </div>
-
-                    <div>
-                        <button className='hover:bg-pink-700   w-44 h-11 border  border-x-4 rounded-full mb-3'>عضله‌سازی و قدرت</button>
-
-                    </div>
-
-                    <div>
-                        <button className='hover:bg-pink-700 w-44 h-11 border  border-x-4 rounded-full mb-3'>فیتنس فانکشنال</button>
-
-                    </div>
-
-                    <div>
-                        <button className='hover:bg-pink-700  w-44 h-11 border  border-x-4 rounded-full mb-3'>بهبود عملکرد ورزشی</button>
-
-                    </div>
-
-                    <div className='mb-6 mt-2 text-2xl text-gray-800 font-bold vazir'>
-                        <h1>سطح ورزشی خود را انتخاب کنید؟</h1>
-                    </div>
-
-                    <div className='flex  flex-col mb-6 justify-center items-center'>
-
-                        <button className='hover:bg-pink-700   w-44 h-11 border   focus:ring-violet-300  border-x-4 rounded-full  mb-2'>مبتدی</button>
-                        <button className='hover:bg-pink-700    w-44 h-11 border    focus:ring-violet-300   border-x-4 rounded-full  mb-3'>متوسط</button>
-                        <button className='hover:bg-pink-700   w-44 h-11 border    focus:ring-violet-300   border-x-4 rounded-full  '>حرفه ای</button>
-
-                    </div>
-
-                    <div className='mb-8 flex justify-center '>
-
-                        <Link href="/info">
-                            <button className='hover:bg-pink-700 mt-1  w-32 h-11 border  border-x-4 rounded-full mr-5 flex justify-center items-center text-xl'>بازگشت</button>
-                        </Link>
-
-
-
-                        <Link href="/user">
-                            <button className='hover:bg-pink-700  mt-1  w-32 h-11 border  border-x-4 rounded-full mr-5 flex justify-center items-center text-xl'>ذخیره</button>
-                        </Link>
-
-
-                    </div> */}
-
+                 
 <button
                         className={`w-44 h-11 border border-x-4 rounded-full mb-4 ${selectedGoal === 'کاهش وزن و تناسب اندام' ? 'bg-pink-700' : ''}`}
                         onClick={() => handleGoalClick('کاهش وزن و تناسب اندام')}

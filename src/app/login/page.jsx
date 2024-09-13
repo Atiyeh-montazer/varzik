@@ -21,7 +21,7 @@ function Login() {
           <div className='flex flex-col mb-5 vazir '>
 
             <div className='flex justify-center items-center '>
-              <input type='text' placeholder='ایمیل' className='outline-none   border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-800 w-64 text-right mb-5 m-1' />
+              <input type='text' placeholder='ایمیل' className='outline-none text-xl   border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-800 w-64 text-right mb-5 m-1' />
 
               <span className='text-2xl text-gray-800  pb-2'><MdEmail /></span>
             </div>
@@ -29,11 +29,11 @@ function Login() {
 
             <div className='flex   items-center '>
 
-              <input type='text' placeholder=' تلفن همراه' className='outline-none text-xl  border border-t-0 border-r-0 border-l-0  border-b-1 bg-transparent placeholder-gray-800 w-64 text-right m-3 ' />
+              <input type='text' placeholder=' تلفن همراه' className='outline-none text-xl   border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-800 w-64 text-right mb-5 m-1' />
 
 
 
-              <span className='text-lg pr-5 pt-3 text-gray-00'> <FaPhoneFlip />
+              <span className='text-2xl text-gray-800  pb-2'> <FaPhoneFlip />
               </span>
 
 
