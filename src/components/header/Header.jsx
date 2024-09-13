@@ -19,6 +19,7 @@ function Header() {
                 <div >
                     <Link href="/login">
                         <button className='hover:bg-gradient-to-r   w-32 h-11 border  focus:bg-pink-700  mt-4 text-white  border-x-4 rounded-full mr-3 mb-3'>خروج</button>
+                        
                     </Link>
                 </div>
             </div>

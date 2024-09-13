@@ -30,7 +30,7 @@ function Footer() {
                 }
 
 
-                <Link href="/goal">
+                <Link href="/mainpage">
                     <button>
                         <GoHomeFill className='text-white text-4xl' />
                     </button>
