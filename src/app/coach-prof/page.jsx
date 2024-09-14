@@ -23,7 +23,7 @@ function Coachprof() {
                         <span class="text-sm text-gray-500 dark:text-gray-400">:سایر تخصص در رشته های دیگر</span>
                         <div class="flex mt-4 mb-2 md:mt-6">
 
-                            {/* <button  className='hover:bg-pink-700  mt-1  w-18 h-8 border  border-x-4 rounded-full mr-1 flex justify-center items-center text-sm' >دریافت برنامه</button> */}
+
 
                             <Link href="/coachinfo">
                                 <button className='hover:bg-pink-700  mt-1  w-32 h-8 border  border-x-4 rounded-full mr-0 flex justify-center items-center text-sm'>ویرایش اطلاعات</button>
@@ -38,9 +38,9 @@ function Coachprof() {
                     </div>
 
                     <div class="flex flex-col items-center pb-5 ">
-                      
+
                         <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">فهرست شاگردان فعال</h5>
-                       
+
                         <div class="flex mt-4 mb-2 md:mt-6">
 
                             <Link href="/coachinfo">
@@ -51,8 +51,8 @@ function Coachprof() {
                     </div>
                 </div>
 
-             
-               
+
+
             </div>
         </>
     )

@@ -6,7 +6,10 @@ import { SiTelegram } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneFlip } from "react-icons/fa6";
 import Link from 'next/link'
+
 function Login() {
+
+
   return (
     <div className='flex flex-col items-center'>
 

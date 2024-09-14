@@ -6,34 +6,33 @@ import { IoMdMan } from "react-icons/io";
 import Link from 'next/link';
 
 function Info() {
-    // State for gender selection
+
     const [selectedGender, setSelectedGender] = useState('');
 
-    // استفاده از state برای ذخیره مقدار وزن اسلایدر
+
     const [sliderValue, setSliderValue] = useState(50);
 
-    // تابعی که در هنگام تغییر اسلایدر فراخوانی می‌شود
     const handleSliderChange = (event) => {
         setSliderValue(event.target.value);
     };
 
-    // استفاده از state برای ذخیره مقدار قد اسلایدر
+
     const [sliderValue1, setSliderValue1] = useState(50);
 
-    // تابعی که در هنگام تغییر اسلایدر فراخوانی می‌شود
+
     const handleSliderChange1 = (event) => {
         setSliderValue1(event.target.value);
     };
 
-    // استفاده از state برای ذخیره مقدار سن اسلایدر
+
     const [sliderValue2, setSliderValue2] = useState(50);
 
-    // تابعی که در هنگام تغییر اسلایدر فراخوانی می‌شود
+
     const handleSliderChange2 = (event) => {
         setSliderValue2(event.target.value);
     };
 
-    // Handlers for gender selection
+
     const handleGenderClick = (gender) => {
         setSelectedGender(gender);
     };
@@ -64,7 +63,7 @@ function Info() {
                     value={sliderValue}
                     className="slider"
                     id="myRange"
-                    onChange={handleSliderChange} 
+                    onChange={handleSliderChange}
                 />
                 <p className='text-center text-gray-900 text-xl'><span>وزن: {sliderValue}</span> کیلو گرم</p>
             </div>
