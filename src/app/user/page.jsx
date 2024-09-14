@@ -10,7 +10,7 @@ import Coach from "@/components/Coach"
 import Image from 'next/image';
 
 
-function CoachList() {
+function User() {
 
     const [activeComponent, setactiveComponent] = useState('trainning');
 
@@ -41,7 +41,7 @@ function CoachList() {
                         </div>
 
 
-                        <div className=' flex justify-center text-4xl mt-8 m gap-16  '>
+                        <div className=' flex justify-center text-2xl mt-8 m gap-10  '>
 
                             <button onClick={() => setactiveComponent('trainning')}>
                                 <FaClipboardList className='hover:border-b-2   ' />
@@ -78,4 +78,4 @@ function CoachList() {
     )
 }
 
-export default CoachList
+export default User
