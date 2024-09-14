@@ -8,7 +8,7 @@ import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDish } from "react-icons/bi";
 import Trainning from "@/components/Trainning"
 import Diet from "@/components/Diet"
-import Coach from "@/components/Coach"
+
 import Image from 'next/image';
 function Mainpage() {
 
@@ -24,15 +24,15 @@ function Mainpage() {
                     <div className='  '>
 
                         <div className=' w-32 h-32 rounded-full bg-white m-6'>
-                            <Image srce='/images/hadi-chopan.jpg'/>
+                            <Image srce='/images/hadi-chopan.jpg' />
                         </div>
 
                         <div className='flex justify-center'>
                             <Link href='/medicalfile'>
-                              <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full mr-12'>پرونده پزشکی</button>
+                                <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full mr-12'>پرونده پزشکی</button>
 
                             </Link>
-                          
+
                             <Link href='/info'>
                                 <button className='hover:bg-pink-700   w-32 h-11 border  border-x-4 rounded-full ml-3 '>ویرایش</button>
 
