@@ -37,7 +37,7 @@ function Footer() {
                 </Link>
 
                 <Link href="/coach-list">
-                    <button>
+                    <button >
                         <FaChalkboardTeacher className='text-white text-4xl' />
                     </button>
                 </Link>
