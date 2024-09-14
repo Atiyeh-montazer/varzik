@@ -24,7 +24,7 @@ function Footer() {
                         :
                         <Link href="/user">
                             <button >
-                                <MdDashboard className='text-white text-4xl' />
+                                <MdDashboard className='text-white text-4xl shadow hover:shadow-pink-100' />
                             </button>
                         </Link >
                 }
@@ -32,13 +32,13 @@ function Footer() {
 
                 <Link href="/mainPage">
                     <button>
-                        <GoHomeFill className='text-white text-4xl' />
+                        <GoHomeFill className='text-white text-4xl shadow hover:shadow-pink-100' />
                     </button>
                 </Link>
 
                 <Link href="/coach-list">
                     <button >
-                        <FaChalkboardTeacher className='text-white text-4xl' />
+                        <FaChalkboardTeacher className='text-white text-4xl shadow hover:shadow-pink-100' />
                     </button>
                 </Link>
 
