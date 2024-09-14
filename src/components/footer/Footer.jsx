@@ -18,13 +18,17 @@ function Footer() {
                         ?
                         <Link href="/goal">
                             <button >
-                                <FaRegEdit className='text-white text-4xl' />
+                                <FaRegEdit className={`
+                            ${pathname == "/goal" ? 'text-green-200' : 'text-white'} 
+                            text-4xl shadow hover:shadow-pink-100`} />
                             </button>
                         </Link >
                         :
                         <Link href="/user">
                             <button >
-                                <MdDashboard className='text-white text-4xl shadow hover:shadow-pink-100' />
+                                <MdDashboard className={`
+                            ${pathname == "/user" ? 'text-green-200' : 'text-white'} 
+                            text-4xl shadow hover:shadow-pink-100`} />
                             </button>
                         </Link >
                 }
@@ -32,13 +36,17 @@ function Footer() {
 
                 <Link href="/mainPage">
                     <button>
-                        <GoHomeFill className='text-white text-4xl shadow hover:shadow-pink-100' />
+                        <GoHomeFill className={`
+                            ${pathname == "/mainPage" ? 'text-green-200' : 'text-white'} 
+                            text-4xl shadow hover:shadow-pink-100`} />
                     </button>
                 </Link>
 
                 <Link href="/coach-list">
                     <button >
-                        <FaChalkboardTeacher className='text-white text-4xl shadow hover:shadow-pink-100' />
+                        <FaChalkboardTeacher className={`
+                            ${pathname == "/coach-list" ? 'text-green-200' : 'text-white'} 
+                            text-4xl shadow hover:shadow-pink-100`} />
                     </button>
                 </Link>
 
