@@ -30,13 +30,13 @@ function Footer() {
                 }
 
 
-                <Link href="/mainpage">
+                <Link href="/mainPage">
                     <button>
                         <GoHomeFill className='text-white text-4xl' />
                     </button>
                 </Link>
 
-                <Link href="/coachlist">
+                <Link href="/coach-list">
                     <button>
                         <FaChalkboardTeacher className='text-white text-4xl' />
                     </button>

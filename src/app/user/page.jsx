@@ -6,8 +6,10 @@ import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDish } from "react-icons/bi";
 import Trainning from "@/components/Trainning"
 import Diet from "@/components/Diet"
-
+import Coach from "@/components/Coach"
 import Image from 'next/image';
+
+
 function CoachList() {
 
     const [activeComponent, setactiveComponent] = useState('trainning');
