@@ -1,6 +1,4 @@
 "use client"
-
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { FaChalkboardTeacher } from "react-icons/fa";
@@ -10,7 +8,7 @@ import Trainning from "@/components/Trainning"
 import Diet from "@/components/Diet"
 
 import Image from 'next/image';
-function Mainpage() {
+function CoachList() {
 
     const [activeComponent, setactiveComponent] = useState('trainning');
 
@@ -78,4 +76,4 @@ function Mainpage() {
     )
 }
 
-export default Mainpage
+export default CoachList

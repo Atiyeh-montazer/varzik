@@ -1,8 +1,9 @@
 'use client';
-
-import React from 'react'
 import Link from 'next/link'
+
+
 function Coachlist() {
+
     return (
         <div className=''>
             <div className='flex flex-wrap justify-center items-center gap-4'>
