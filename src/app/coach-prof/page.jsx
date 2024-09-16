@@ -40,7 +40,7 @@ function Coachprof() {
 
                         <div class="flex mt-4 mb-2 md:mt-6">
 
-                            <Link href="/coachinfo">
+                            <Link href="/coach-students">
                                 <button className='hover:bg-pink-700  mt-1  w-32 h-8 border  border-x-4 rounded-full mr-0 flex justify-center items-center text-sm'>مشاهده وضعیت</button>
                             </Link>
                         </div>
