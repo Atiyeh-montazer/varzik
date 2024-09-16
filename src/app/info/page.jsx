@@ -86,8 +86,8 @@ function Info() {
             <div className="slidecontainer">
                 <input
                     type="range"
-                    min="20"
-                    max="300"
+                    min="12"
+                    max="70"
                     value={sliderValue2}
                     className="slider"
                     id="myRange"
