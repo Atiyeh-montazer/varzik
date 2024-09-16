@@ -8,9 +8,10 @@ import Trainning from "@/components/Trainning"
 import Diet from "@/components/Diet"
 import Coach from "@/components/Coach"
 import Image from 'next/image';
-
+import { usePathname } from 'next/navigation'
 
 function User() {
+    const pathname = usePathname()
 
     const [activeComponent, setactiveComponent] = useState('trainning');
 
@@ -44,18 +45,25 @@ function User() {
                         <div className=' flex justify-center text-2xl mt-8 m gap-10  '>
 
                             <button onClick={() => setactiveComponent('trainning')}>
-                                <FaClipboardList className='hover:border-b-2   ' />
+                                <FaClipboardList   className={`
+                            ${activeComponent == 'trainning' ? 'text-green-200' : 'text-black'} 
+                            text-4xl shadow `}/>
                             </button>
 
 
                             <button onClick={() => setactiveComponent('diet')}>
-                                <BiSolidDish className='hover:border-b-2 
-                              ' />
+                                <BiSolidDish 
+                                className={`
+                            ${activeComponent == 'diet' ? 'text-green-200' : 'text-black'} 
+                            text-4xl shadow `} />
                             </button>
 
 
                             <button>
-                                <FaChalkboardTeacher onClick={() => setactiveComponent('coach')} className='hover:border-b-2   ' />
+                                <FaChalkboardTeacher onClick={() => setactiveComponent('coach')}   
+                                 className={`
+                            ${activeComponent == 'coach'  ? 'text-green-200' : 'text-black'} 
+                            text-4xl shadow `} />
                             </button>
 
                         </div>
