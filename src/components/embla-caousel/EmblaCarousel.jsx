@@ -26,23 +26,43 @@ const EmblaCarousel = (props) => {
 
   return (
     <section className="embla">
+      <div className='m-4 text-right text-white text-4xl  drop-shadow-lg'>
+           <h1>برترین ها</h1> 
+      </div>
+  
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
+
+          
           {slides.map((slide) => (
             <div className="embla__slide" key={slide.id}>
-              <Image src={slide.src} width={1000} height={50} className='rounded-xl border border-slate-400' />
+              
+              <Image src={slide.src} width={1000} height={50} className='rounded-xl mt-4 border border-slate-400' />
             </div>
           ))}
         </div>
       </div>
 
-      <div className="embla__controls">
+      <div className='m-4 mt-8 mb-2 text-right text-white text-4xl  drop-shadow-lg'>
+           <h1>ویکی</h1> 
+      </div>
+      <div className="embla__viewport" ref={emblaRef}>
+        <div className="embla__container">
+          {slides.map((slide) => (
+            <div className="embla__slide" key={slide.id}>
+              <Image src={slide.src} width={1000} height={50} className='rounded-xl mt-6 border border-slate-400' />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* <div className="embla__controls">
         <div className="embla__buttons">
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
         </div>
 
-        <div className="embla__dots">
+       <div className="embla__dots">
           {scrollSnaps.map((_, index) => (
             <DotButton
               key={index}
@@ -53,8 +73,11 @@ const EmblaCarousel = (props) => {
             />
           ))}
         </div>
-      </div>
+
+
+      </div> */}
     </section>
+
   )
 }
 

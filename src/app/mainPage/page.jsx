@@ -31,15 +31,13 @@ function Mainpage() {
     return (
         <div>
             <EmblaCarousel slides={slides1} options={OPTIONS} />
-            <div className='flex flex-wrap justify-center items-center gap-4'>
+            {/* <div className='flex flex-wrap justify-center items-center gap-4'>
                 <div class=" bg-[#c6d8d3] border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
 
-
-
-
-                    <div class="flex justify-end py-8 px-28 ">
+            <div class="flex justify-end py-8 px-28 ">
 
                     </div>
+
                     <div class="flex flex-col items-center ">
 
 
@@ -51,9 +49,10 @@ function Mainpage() {
                             </Link>
                         </div>
                     </div>
+
                 </div>
 
-            </div>
+            </div> */}
 
         </div>
     )
