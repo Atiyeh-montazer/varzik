@@ -28,7 +28,7 @@ function Login() {
     try {
       let resp = await axios.post('http://192.168.0.158:3000/login', { email, phone });
       console.log(resp);
-      push(`/validate-otp?phone=${phone}`)
+      push(`/validate-otp?phone=${phone}&email=${email}`)
     }
     catch (error) {
       setError('ورود با خطا مواجه شد: ' + error)
