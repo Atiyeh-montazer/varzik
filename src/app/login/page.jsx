@@ -36,7 +36,7 @@ function Login() {
     }
 
     try {
-      let resp = await axios.post('http://localhost:3000/login', { email, phone });
+      let resp = await axios.post('http://192.168.30.200:3000/login', { email, phone });
       console.log(resp);
       push(`/validate-otp?phone=${phone}&email=${email}`)
     }

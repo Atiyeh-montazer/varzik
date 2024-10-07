@@ -37,7 +37,7 @@ function Footer() {
                 <Link href="/mainPage">
                     <button>
                         <GoHomeFill className={`
-                            ${pathname == "/mainPage" ? 'text-green-200' : 'text-white'} 
+                            ${pathname == "/mainpage" ? 'text-green-200' : 'text-white'} 
                             text-4xl shadow hover:shadow-pink-100`} />
                     </button>
                 </Link>

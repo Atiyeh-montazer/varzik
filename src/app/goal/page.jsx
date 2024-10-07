@@ -24,7 +24,7 @@ function Goal() {
                 }
 
                 // Fetch user data from the check-token API
-                const response = await axios.get('http://localhost:3000/check-token', {
+                const response = await axios.get('http://192.168.30.200:3000/check-token', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -66,7 +66,7 @@ function Goal() {
             localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo));
 
             // Send updated data to the backend
-            await axios.put('http://localhost:3000/user/update-workout-info', updatedInfo, {
+            await axios.put('http://192.168.30.200:3000/user/update-workout-info', updatedInfo, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

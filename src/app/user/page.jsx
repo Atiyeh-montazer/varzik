@@ -24,17 +24,17 @@ function User() {
             const token = localStorage.getItem('jwtToken');
             try {
                 if (activeComponent === 'trainning') {
-                    const response = await axios.get('http://localhost:3000/user/plans', {
+                    const response = await axios.get('http://192.168.30.200:3000/user/plans', {
                         headers: { Authorization: `Bearer ${token}` },
                     });
                     setPlans(response.data.plans);
                 } else if (activeComponent === 'diet') {
-                    const response = await axios.get('http://localhost:3000/user/diets', {
+                    const response = await axios.get('http://192.168.30.200:3000/user/diets', {
                         headers: { Authorization: `Bearer ${token}` },
                     });
                     setDiets(response.data.diets);
                 } else if (activeComponent === 'coach') {
-                    const response = await axios.get('http://localhost:3000/user/coaches', {
+                    const response = await axios.get('http://192.168.30.200:3000/user/coaches', {
                         headers: { Authorization: `Bearer ${token}` },
                     });
                     setCoaches(response.data.coaches);

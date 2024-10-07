@@ -26,7 +26,7 @@ function Info() {
             }
 
             try {
-                const resp = await axios.get('http://localhost:3000/check-token', {
+                const resp = await axios.get('http://192.168.30.200:3000/check-token', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

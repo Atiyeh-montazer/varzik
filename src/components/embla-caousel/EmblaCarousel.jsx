@@ -7,13 +7,14 @@ import {
 } from './EmblaCarouselArrowButtons'
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
+import { Changa } from 'next/font/google'
 
 const EmblaCarousel = (props) => {
 
 
-  const { slides, options } = props
+  const {title, slides, options } = props
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
-
+console.log(title)
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi)
 
@@ -21,16 +22,19 @@ const EmblaCarousel = (props) => {
     prevBtnDisabled,
     nextBtnDisabled,
     onPrevButtonClick,
+
+
+
     onNextButtonClick
   } = usePrevNextButtons(emblaApi)
 
   return (
     <section className="embla">
-      <div className='m-4 text-right text-white text-4xl  drop-shadow-lg'>
+      {/* <div className='m-4 text-right text-white text-4xl  drop-shadow-lg'>
            <h1>برترین ها</h1> 
-      </div>
+      </div> */}
   
-      <div className="embla__viewport" ref={emblaRef}>
+      {/* <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
 
           
@@ -41,10 +45,15 @@ const EmblaCarousel = (props) => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
+
+
+
+
+
 
       <div className='m-4 mt-8 mb-2 text-right text-white text-4xl  drop-shadow-lg'>
-           <h1>ویکی</h1> 
+           <h1>{props.title}</h1> 
       </div>
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">

@@ -32,7 +32,7 @@ function Validateotp() {
         let finalCode = otp.join(''); // Concatenate the OTP values
 
         try {
-            let resp = await axios.post('http://localhost:3000/validate-otp', { otp: finalCode, phone });
+            let resp = await axios.post('http://192.168.30.200:3000/validate-otp', { otp: finalCode, phone });
             const token = resp.data.token;
             setToken(token); // Store the token in state
             localStorage.setItem('jwtToken', token); // Store the token in local storage
@@ -51,7 +51,7 @@ function Validateotp() {
     // Call the check-token API to get user information
     const checkToken = async (jwtToken) => {
         try {
-            let userInfoResp = await axios.get('http://localhost:3000/check-token', {
+            let userInfoResp = await axios.get('http://192.168.30.200:3000/check-token', {
                 headers: {
                     Authorization: `Bearer ${jwtToken}` // Send the token in headers
                 }
@@ -93,7 +93,7 @@ function Validateotp() {
     const resendOtp = async () => {
         try {
             setError(''); // Remove any existing error when resend button is clicked
-            let resp = await axios.post('http://localhost:3000/login', { email, phone });
+            let resp = await axios.post('http://192.168.30.200:3000/login', { email, phone });
             console.log(resp);
 
             // Reset OTP fields
