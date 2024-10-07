@@ -2,11 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
+import { useRouter } from 'next/navigation'; // Use router for navigation
 
 function Validateotp() {
     const [otp, setOtp] = useState(['', '', '', '']); // Initialize OTP with 4 values
     const [error, setError] = useState('');
     const searchParams = useSearchParams();
+    const [token, setToken] = useState(null);
+
+    const phone = searchParams.get('phone') ?? "0";
+    const email = searchParams.get('email') ?? "";
+
+    const router = useRouter(); // Use Next.js router
 
     // UseEffect to automatically trigger validation when the OTP array is fully filled
     useEffect(() => {
@@ -15,12 +22,8 @@ function Validateotp() {
         }
     }, [otp]); // Depend on changes to the otp array
 
-    const phone = searchParams.get('phone') ?? "0";
-    const email = searchParams.get('email') ?? "";
-
     // Validate the OTP code and send it to the server
     const validateCode = async () => {
-        console.log(otp)
         if (otp.some((value) => value === '')) {
             setError('وارد کردن کد الزامی است!');
             return;
@@ -30,10 +33,42 @@ function Validateotp() {
 
         try {
             let resp = await axios.post('http://localhost:3000/validate-otp', { otp: finalCode, phone });
-            console.log(resp.data.token);
+            const token = resp.data.token;
+            setToken(token); // Store the token in state
+            localStorage.setItem('jwtToken', token); // Store the token in local storage
+
+            // Call the check-token API to get user info
+            checkToken(token);
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+                setError(`ورود با خطا مواجه شد: ${error.response.data.message}`);
+              } else {
+                  setError('ورود با خطا مواجه شد: ' + error.message);
+              }
         }
-        catch (error) {
-            setError('ورود با خطا مواجه شد: ' + error);
+    };
+
+    // Call the check-token API to get user information
+    const checkToken = async (jwtToken) => {
+        try {
+            let userInfoResp = await axios.get('http://localhost:3000/check-token', {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}` // Send the token in headers
+                }
+            });
+
+            const userInfo = userInfoResp.data.user;
+            console.log('User Info:', userInfo);
+
+            // Store the user info in localStorage
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+            // redirect to user page
+            router.push("/user");
+
+
+        } catch (err) {
+            setError('Failed to fetch user info: ' + err);
         }
     };
 
@@ -51,16 +86,30 @@ function Validateotp() {
             if (value !== '' && index < otp.length - 1) {
                 document.getElementById(`code${index + 2}`).focus();
             }
-            
         }
     };
 
+
     const resendOtp = async () => {
-        // Implement OTP resend logic here
+        try {
+            setError(''); // Remove any existing error when resend button is clicked
+            let resp = await axios.post('http://localhost:3000/login', { email, phone });
+            console.log(resp);
+
+            // Reset OTP fields
+            setOtp(['', '', '', '']);
+            
+            // Reset countdown and hide the button again
+            setCountdown(120);
+            setShowResendButton(false); // Hide the resend button after click
+        } catch (error) {
+            setError('ارسال مجدد کد با خطا مواجه شد ' + error);
+        }
     };
 
-    // State for countdown
+    // State for countdown and button visibility
     const [countdown, setCountdown] = useState(120);
+    const [showResendButton, setShowResendButton] = useState(false);
 
     useEffect(() => {
         // Start the countdown timer when the component is mounted
@@ -68,6 +117,7 @@ function Validateotp() {
             setCountdown((prevCountdown) => {
                 if (prevCountdown <= 1) {
                     clearInterval(timer);
+                    setShowResendButton(true); // Show the resend button when countdown reaches 0
                     return 0;
                 }
                 return prevCountdown - 1;
@@ -76,7 +126,7 @@ function Validateotp() {
 
         // Cleanup the timer when the component is unmounted
         return () => clearInterval(timer);
-    }, []);
+    }, [countdown]);
 
     return (
         <div className='flex flex-col justify-center items-center h-full'>
@@ -102,16 +152,18 @@ function Validateotp() {
                 <p className='text-white' id="timer">ثانیه {countdown}</p>
             </div>
 
-            <div className={`w-full text-center ${countdown !== 0 ? 'hidden' : ""}`}>
-                <button
-                    className='hover:bg-gradient-to-r w-36 h-11 border focus:bg-pink-700 mt-4 text-white border-x-4 rounded-full mb-3'
-                    id="resendBtn"
-                    disabled={countdown !== 0}
-                    onClick={resendOtp}
-                >
-                    <span>درخواست مجدد کد</span>
-                </button>
-            </div>
+            {/* Show resend button only when countdown is zero */}
+            {showResendButton && (
+                <div className={`w-full text-center`}>
+                    <button
+                        className='hover:bg-gradient-to-r w-36 h-11 border focus:bg-pink-700 mt-4 text-white border-x-4 rounded-full mb-3'
+                        id="resendBtn"
+                        onClick={resendOtp}
+                    >
+                        <span>درخواست مجدد کد</span>
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

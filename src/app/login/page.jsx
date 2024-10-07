@@ -9,15 +9,25 @@ import { SiTelegram } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneFlip } from "react-icons/fa6";
 import Link from 'next/link'
-import { useState } from 'react';
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const { push } = useRouter();
+
+  const router = useRouter(); // Use Next.js router
+    useEffect(() => {
+        // Check if user info exists in localStorage
+        const userInfo = localStorage.getItem('userInfo');
+        if (userInfo) {
+            // If no user info, redirect to login
+            router.push('/user');
+        }
+    }, [router]); // Empty dependency to run once on mount
 
   const handleLogin = async () => {
     if (!phone || !email) {
@@ -26,12 +36,17 @@ function Login() {
     }
 
     try {
-      let resp = await axios.post('http://192.168.0.158:3000/login', { email, phone });
+      let resp = await axios.post('http://localhost:3000/login', { email, phone });
       console.log(resp);
       push(`/validate-otp?phone=${phone}&email=${email}`)
     }
     catch (error) {
-      setError('ورود با خطا مواجه شد: ' + error)
+      // Show the error message from the server
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(`درخواست کد با خطا مواجه شد: ${error.response.data.message}`);
+      } else {
+          setError('درخواست کد با خطا مواجه شد: ' + error.message);
+      }
     }
   }
 

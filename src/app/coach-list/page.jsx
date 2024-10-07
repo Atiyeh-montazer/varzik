@@ -1,8 +1,19 @@
 'use client';
 import Link from 'next/link'
-
+import { useRouter } from 'next/navigation'; // Use router for navigation
+import { useState, useEffect } from 'react';
 
 function Coachlist() {
+
+    const router = useRouter(); // Use Next.js router
+    useEffect(() => {
+        // Check if user info exists in localStorage
+        const userInfo = localStorage.getItem('userInfo');
+        if (!userInfo) {
+            // If no user info, redirect to login
+            router.push('/login');
+        }
+    }, [router]); // Empty dependency to run once on mount
 
     return (
         <div >

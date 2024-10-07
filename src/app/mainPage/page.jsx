@@ -1,10 +1,11 @@
 "use client"
-import { useState } from 'react';
 import React from 'react'
 import EmblaCarousel from '@/components/embla-caousel/EmblaCarousel'
 import '@/components/embla-caousel/assets/css/sandbox.css'
 import '@/components/embla-caousel/assets/css/embla.css'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // Use router for navigation
+import { useState, useEffect } from 'react';
 
 
 
@@ -14,6 +15,16 @@ const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
 
 
 function Mainpage() {
+
+    const router = useRouter(); // Use Next.js router
+    useEffect(() => {
+        // Check if user info exists in localStorage
+        const userInfo = localStorage.getItem('userInfo');
+        if (!userInfo) {
+            // If no user info, redirect to login
+            router.push('/login');
+        }
+    }, [router]); // Empty dependency to run once on mount
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => {
