@@ -15,18 +15,21 @@ function Info() {
     const [error, setError] = useState('');
     
     const router = useRouter(); // Use Next.js router for redirection
-
+    useEffect(() => {
+        // Check if user info exists in localStorage
+        const userInfo = localStorage.getItem('userInfo');
+        if (!userInfo) {
+            // If no user info, redirect to login
+            router.push('/login');
+        }
+    }, [router]); // Empty dependency to run once on mount
+    
     // Fetch workout info from the server when the component is mounted
     useEffect(() => {
         const fetchUserInfo = async () => {
-            const token = localStorage.getItem('jwtToken');
-            if (!token) {
-                router.push('/login');
-                return;
-            }
 
             try {
-                const resp = await axios.get('http://192.168.30.200:3000/check-token', {
+                const resp = await axios.get('https://api.varzik.ir/check-token', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

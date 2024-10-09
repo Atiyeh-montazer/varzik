@@ -36,8 +36,7 @@ function Login() {
     }
 
     try {
-      let resp = await axios.post('http://192.168.30.200:3000/login', { email, phone });
-      console.log(resp);
+      let resp = await axios.post('https://api.varzik.ir/login', { email, phone });
       push(`/validate-otp?phone=${phone}&email=${email}`)
     }
     catch (error) {

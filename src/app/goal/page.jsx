@@ -9,9 +9,17 @@ function Goal() {
     const [selectedLevel, setSelectedLevel] = useState('');
     const [successMessage, setSuccessMessage] = useState(''); // State for success message
     const [isSubmitting, setIsSubmitting] = useState(false); // State to disable button while submitting
-    const [loading, setLoading] = useState(true); // State for loading while fetching data
 
     const router = useRouter();
+
+    useEffect(() => {
+        // Check if user info exists in localStorage
+        const userInfo = localStorage.getItem('userInfo');
+        if (!userInfo) {
+            // If no user info, redirect to login
+            router.push('/login');
+        }
+    }, [router]); // Empty dependency to run once on mount
 
     // Fetch user data from the check-token API and set default values
     useEffect(() => {
@@ -24,7 +32,7 @@ function Goal() {
                 }
 
                 // Fetch user data from the check-token API
-                const response = await axios.get('http://192.168.30.200:3000/check-token', {
+                const response = await axios.get('https://api.varzik.ir/check-token', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -38,8 +46,6 @@ function Goal() {
             } catch (error) {
                 console.error('Failed to fetch user data:', error);
                 router.push('/login'); // Redirect if fetch fails
-            } finally {
-                setLoading(false); // Set loading to false after fetching data
             }
         };
 
@@ -66,7 +72,7 @@ function Goal() {
             localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo));
 
             // Send updated data to the backend
-            await axios.put('http://192.168.30.200:3000/user/update-workout-info', updatedInfo, {
+            await axios.put('https://api.varzik.ir/user/update-workout-info', updatedInfo, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

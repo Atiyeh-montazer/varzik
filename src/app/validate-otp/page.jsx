@@ -15,6 +15,15 @@ function Validateotp() {
 
     const router = useRouter(); // Use Next.js router
 
+    useEffect(() => {
+        // Check if user info exists in localStorage
+        const userInfo = localStorage.getItem('userInfo');
+        if (userInfo) {
+            // If no user info, redirect to login
+            router.push('/user');
+        }
+    }, [router]); // Empty dependency to run once on mount
+
     // UseEffect to automatically trigger validation when the OTP array is fully filled
     useEffect(() => {
         if (otp.every((value) => value !== '')) {
@@ -29,12 +38,13 @@ function Validateotp() {
             return;
         }
 
+        // [3, 4, 5, 6]
+        // 3456
         let finalCode = otp.join(''); // Concatenate the OTP values
 
         try {
-            let resp = await axios.post('http://192.168.30.200:3000/validate-otp', { otp: finalCode, phone });
+            let resp = await axios.post('https://api.varzik.ir/validate-otp', { otp: finalCode, phone: phone });
             const token = resp.data.token;
-            setToken(token); // Store the token in state
             localStorage.setItem('jwtToken', token); // Store the token in local storage
 
             // Call the check-token API to get user info
@@ -51,7 +61,7 @@ function Validateotp() {
     // Call the check-token API to get user information
     const checkToken = async (jwtToken) => {
         try {
-            let userInfoResp = await axios.get('http://192.168.30.200:3000/check-token', {
+            let userInfoResp = await axios.get('https://api.varzik.ir/check-token', {
                 headers: {
                     Authorization: `Bearer ${jwtToken}` // Send the token in headers
                 }
@@ -76,6 +86,8 @@ function Validateotp() {
     const handleInputChange = (e, index) => {
         const value = e.target.value;
 
+
+        console.log("index>>", index);
         // Only accept numeric input
         if (/^[0-9]?$/.test(value)) {
             const newOtp = [...otp]; // Copy the existing otp array
@@ -93,7 +105,7 @@ function Validateotp() {
     const resendOtp = async () => {
         try {
             setError(''); // Remove any existing error when resend button is clicked
-            let resp = await axios.post('http://192.168.30.200:3000/login', { email, phone });
+            let resp = await axios.post('https://api.varzik.ir/login', { email, phone });
             console.log(resp);
 
             // Reset OTP fields
@@ -135,7 +147,7 @@ function Validateotp() {
                     {otp.map((digit, index) => (
                         <input
                             key={index}
-                            id={`code${index + 1}`}
+                            id={`code${index + 1}`} 
                             className='w-12 h-12 bg-white rounded-sm text-center outline-none hover:border-2 border-[#331832] ml-5'
                             type="text"
                             value={digit}

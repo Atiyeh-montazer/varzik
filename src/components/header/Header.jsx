@@ -11,7 +11,7 @@ function Header() {
     const handleLogout = async () => {
         try {
             // Call the logout API
-            await axios.post('http://192.168.30.200:3000/logout', {}, {
+            await axios.post('https://api.varzik.ir/logout', {}, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('jwtToken')}`, // Send the token in headers
                 },

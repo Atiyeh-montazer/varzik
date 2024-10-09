@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown'; // Import react-markdown
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'; // Import remark-gfm
 
 function Trainning({ plans }) {
     const [selectedPlan, setSelectedPlan] = useState(null);
@@ -61,7 +62,10 @@ function Trainning({ plans }) {
                         <h2 className="text-xl font-bold mb-4">جزئیات برنامه</h2>
                         <h3 className="text-md mb-2 font-semibold">حرکات برنامه:</h3>
                         <div className="max-h-48 overflow-y-auto pr-2"> {/* Scrollable list container */}
-                            <ReactMarkdown className="markdown-content text-right">
+                            <ReactMarkdown
+                                className="markdown-content text-right"
+                                remarkPlugins={[remarkGfm]} // Enable GFM for tables
+                            >
                                 {selectedPlan.movements ? selectedPlan.movements : 'هیچ حرکتی موجود نیست'}
                             </ReactMarkdown>
                         </div>
