@@ -1,72 +1,78 @@
 "use client";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
-import { FaChalkboardTeacher } from "react-icons/fa";
-import { FaClipboardList } from "react-icons/fa";
+import { FaChalkboardTeacher, FaClipboardList } from "react-icons/fa";
 import { BiSolidDish } from "react-icons/bi";
 import Trainning from "@/components/Trainning";
 import Diet from "@/components/Diet";
 import Coach from "@/components/Coach";
 import Image from 'next/image';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Use router for navigation
+import { useRouter } from 'next/navigation';
+import { UserContext } from '@/contexts/userContext'; // Import UserContext
 
 function User() {
+    const { user } = useContext(UserContext); // Get user data from context
     const [activeComponent, setActiveComponent] = useState('trainning');
-    const [plans, setPlans] = useState([]); // State to store user plans
-    const [diets, setDiets] = useState([]); // State to store user diets
-    const [coaches, setCoaches] = useState([]); // State to store user coaches
-    const [userInfo, setUserInfo] = useState(null); // State to store user info
-    const router = useRouter(); // Use Next.js router
+    const [plans, setPlans] = useState([]); 
+    const [diets, setDiets] = useState([]); 
+    const [coaches, setCoaches] = useState([]); 
+    const [loading, setLoading] = useState(true); // Loading state
+    const router = useRouter();
 
+    // Check for user and redirect to login if not found
     useEffect(() => {
-        // Check if user info exists in localStorage
-        const userInfo = localStorage.getItem('userInfo');
-        if (!userInfo) {
-            // If no user info, redirect to login
-            router.push('/login');
+        if (!user) {
+            router.replace('/login'); // Avoid multiple pushes to the history
+        } else {
+            setLoading(false); // Stop loading once user is confirmed
         }
-    }, [router]); // Empty dependency to run once on mount
+    }, [user, router]);
 
+    // Fetch data only if the user exists in context
     useEffect(() => {
-        const fetchData = async () => {
-            const token = localStorage.getItem('jwtToken');
-            try {
-                if (activeComponent === 'trainning') {
-                    const response = await axios.get('https://api.varzik.ir/user/plans', {
-                        headers: { Authorization: `Bearer ${token}` },
-                    });
-                    setPlans(response.data.plans);
-                } else if (activeComponent === 'diet') {
-                    const response = await axios.get('https://api.varzik.ir/user/diets', {
-                        headers: { Authorization: `Bearer ${token}` },
-                    });
-                    setDiets(response.data.diets);
-                } else if (activeComponent === 'coach') {
-                    const response = await axios.get('https://api.varzik.ir/user/coaches', {
-                        headers: { Authorization: `Bearer ${token}` },
-                    });
-                    setCoaches(response.data.coaches);
+        if (user) {
+            const fetchData = async () => {
+                const token = localStorage.getItem('jwtToken');
+                try {
+                    if (activeComponent === 'trainning') {
+                        const response = await axios.get('https://api.varzik.ir/user/plans', {
+                            headers: { Authorization: `Bearer ${token}` },
+                        });
+                        setPlans(response.data.plans);
+                    } else if (activeComponent === 'diet') {
+                        const response = await axios.get('https://api.varzik.ir/user/diets', {
+                            headers: { Authorization: `Bearer ${token}` },
+                        });
+                        setDiets(response.data.diets);
+                    } else if (activeComponent === 'coach') {
+                        const response = await axios.get('https://api.varzik.ir/user/coaches', {
+                            headers: { Authorization: `Bearer ${token}` },
+                        });
+                        setCoaches(response.data.coaches);
+                    }
+                } catch (err) {
+                    console.error('Failed to fetch data:', err);
                 }
-            } catch (err) {
-                console.error('Failed to fetch data:', err);
-            }
-        };
-
-        fetchData();
-    }, [activeComponent, router]);
+            };
+            fetchData();
+        }
+    }, [activeComponent, user]);
 
     return (
         <div className='flex flex-col justify-center items-center'>
             <div className='relative W-full'>
                 <div className=''>
-                    <div className='w-32 h-32 rounded-full bg-white m-6'>
-                        <Image
-                            src='/images/hadi-chopan.jpeg'
-                            alt="User Image"
-                            width={128}
-                            height={128}
-                        />
+                    <div className='w-32 h-32 rounded-full bg-white m-6 overflow-hidden'>
+                        {user && user.profile_pic && (
+                            <Image
+                                src={`https://api.varzik.ir${user.profile_pic}`} 
+                                alt="User Image"
+                                width={128}
+                                height={128}
+                                className="object-cover w-full h-full"
+                            />
+                        )}
                     </div>
 
                     <div className='flex justify-center'>
@@ -83,7 +89,7 @@ function User() {
                         </Link>
                     </div>
 
-                    <div className='flex justify-center text-2xl mt-8 m gap-10'>
+                    <div className='flex justify-center text-2xl mt-8 gap-10'>
                         <button onClick={() => setActiveComponent('trainning')}>
                             <FaClipboardList
                                 className={`text-4xl shadow ${activeComponent === 'trainning' ? 'text-green-200' : 'text-black'}`}
@@ -104,9 +110,9 @@ function User() {
                     </div>
 
                     <div>
-                        {activeComponent === 'trainning' && <Trainning plans={plans} />} {/* Pass plans to Trainning component */}
-                        {activeComponent === 'diet' && <Diet diets={diets} />} {/* Pass diets to Diet component */}
-                        {activeComponent === 'coach' && <Coach coaches={coaches} />} {/* Pass coaches to Coach component */}
+                        {activeComponent === 'trainning' && <Trainning plans={plans} />} 
+                        {activeComponent === 'diet' && <Diet diets={diets} />} 
+                        {activeComponent === 'coach' && <Coach coaches={coaches} />} 
                     </div>
                 </div>
             </div>

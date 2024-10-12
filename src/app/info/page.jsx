@@ -1,59 +1,38 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect, useContext } from 'react';
 import { MdOutlineWoman2 } from "react-icons/md";
-import './style.css'; // Keeping your styles intact
+import './style.css'; 
 import { IoMdMan } from "react-icons/io";
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // Use router for navigation
+import { useRouter } from 'next/navigation'; 
 import axios from 'axios';
+import { UserContext } from '@/contexts/userContext'; 
 
 function Info() {
+    const { user, login } = useContext(UserContext); 
     const [selectedGender, setSelectedGender] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);  // Weight
-    const [sliderValue1, setSliderValue1] = useState(50); // Height
-    const [sliderValue2, setSliderValue2] = useState(50); // Age
+    const [sliderValue, setSliderValue] = useState(50);  
+    const [sliderValue1, setSliderValue1] = useState(50); 
+    const [sliderValue2, setSliderValue2] = useState(50); 
     const [error, setError] = useState('');
+    const [isFirstRender, setIsFirstRender] = useState(true); 
     
-    const router = useRouter(); // Use Next.js router for redirection
+    const router = useRouter(); 
+
     useEffect(() => {
-        // Check if user info exists in localStorage
-        const userInfo = localStorage.getItem('userInfo');
-        if (!userInfo) {
-            // If no user info, redirect to login
+        if (!user) {
             router.push('/login');
-        }
-    }, [router]); // Empty dependency to run once on mount
-    
-    // Fetch workout info from the server when the component is mounted
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-
-            try {
-                const resp = await axios.get('https://api.varzik.ir/check-token', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                const userInfo = resp.data.user;
-
-                // Pre-fill the fields with the workout info from the response
-                if (userInfo.workout_info) {
-                    setSliderValue(userInfo.workout_info.weight || 50);
-                    setSliderValue1(userInfo.workout_info.height || 50);
-                    setSliderValue2(userInfo.workout_info.age || 50);
-                    setSelectedGender(userInfo.workout_info.sex === 'male' ? 'man' : 'woman');
-                }
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-                setError('Failed to fetch user information.');
-                // Redirect to login if token check fails
-                router.push('/login');
+        } else if (isFirstRender) {
+            // Pre-fill the sliders and gender from the user context
+            if (user.workout_info) {
+                setSliderValue(user.workout_info.weight || 50);
+                setSliderValue1(user.workout_info.height || 50);
+                setSliderValue2(user.workout_info.age || 50);
+                setSelectedGender(user.workout_info.sex === 'male' ? 'man' : 'woman');
             }
-        };
-
-        fetchUserInfo();
-    }, [router]);
+            setIsFirstRender(false);
+        }
+    }, [user, router, isFirstRender]); 
 
     const handleSliderChange = (event, setter) => {
         setter(event.target.value);
@@ -64,15 +43,27 @@ function Info() {
     };
 
     const handleNextClick = () => {
-        // Store the workout info in localStorage
-        const userWorkoutInfo = {
+        const updatedWorkoutInfo = {
             weight: sliderValue,
             height: sliderValue1,
             age: sliderValue2,
             sex: selectedGender === 'woman' ? 'female' : 'male',
         };
-        console.log("userWorkoutInfo", userWorkoutInfo);
-        localStorage.setItem('userWorkoutInfo', JSON.stringify(userWorkoutInfo));
+
+        // Merge the workout info into the user context
+        login({
+            ...user, // Spread current user properties
+            workout_info: updatedWorkoutInfo // Update only workout_info
+        });
+
+        // For debugging purposes, check if the user context has updated properly
+        console.log('Updated User Context:', {
+            ...user,
+            workout_info: updatedWorkoutInfo
+        });
+
+        // Optionally update localStorage for redundancy
+        localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedWorkoutInfo));
     };
 
     return (

@@ -34,7 +34,7 @@ function Trainning({ plans }) {
                         <div
                             key={plan.plan_id}
                             className="w-36 px-4 mt-5 ml-3 text-right border bg-pink-200 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
-                            onClick={() => openModal(plan)}
+                           
                         >
                             <h5 className="mb-2 text-md font-semibold tracking-tight text-gray-900 dark:text-white">
                                 برنامه : {plan.plan_id}
@@ -48,6 +48,17 @@ function Trainning({ plans }) {
                             <p className="mb-3 font-normal text-gray-500 dark:text-gray-400 text-sm">
                                 وضعیت پیشرفت: {plan.progress ? plan.progress : 'در دسترس نیست'}
                             </p>
+                            
+                    <div className='text-center flex justify-center items-center '>
+                        <Link href="/plan">
+                          <button
+                        className="w-32 h-11 border border-x-4 rounded-full mb-3  hover:bg-pink-700"
+                        
+                    > جزيیات
+                    </button>
+                        </Link>
+                  
+                    </div>
                         </div>
                     ))
                 ) : (
@@ -55,29 +66,8 @@ function Trainning({ plans }) {
                 )}
             </div>
 
-            {/* Modal for displaying plan details */}
-            {showModal && selectedPlan && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white w-80 p-4 rounded-lg shadow-lg relative max-h-96 overflow-y-auto text-right">
-                        <h2 className="text-xl font-bold mb-4">جزئیات برنامه</h2>
-                        <h3 className="text-md mb-2 font-semibold">حرکات برنامه:</h3>
-                        <div className="max-h-48 overflow-y-auto pr-2"> {/* Scrollable list container */}
-                            <ReactMarkdown
-                                className="markdown-content text-right"
-                                remarkPlugins={[remarkGfm]} // Enable GFM for tables
-                            >
-                                {selectedPlan.movements ? selectedPlan.movements : 'هیچ حرکتی موجود نیست'}
-                            </ReactMarkdown>
-                        </div>
-                        <button
-                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                            onClick={closeModal}
-                        >
-                            ✕
-                        </button>
-                    </div>
-                </div>
-            )}
+           
+           
         </div>
     );
 }

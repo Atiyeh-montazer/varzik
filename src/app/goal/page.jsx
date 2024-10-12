@@ -1,56 +1,31 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { UserContext } from '@/contexts/userContext';
 
 function Goal() {
+    const { user, login } = useContext(UserContext);
     const [selectedGoal, setSelectedGoal] = useState('');
     const [selectedLevel, setSelectedLevel] = useState('');
-    const [successMessage, setSuccessMessage] = useState(''); // State for success message
-    const [isSubmitting, setIsSubmitting] = useState(false); // State to disable button while submitting
-
+    const [successMessage, setSuccessMessage] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
-        // Check if user info exists in localStorage
-        const userInfo = localStorage.getItem('userInfo');
-        if (!userInfo) {
-            // If no user info, redirect to login
+        if (!user) {
+            // If user doesn't exist in context, redirect to login
             router.push('/login');
+        } else {
+            // Check for user workout_info in context or fall back to localStorage
+            const workoutInfo = user?.workout_info || JSON.parse(localStorage.getItem('userWorkoutInfo')) || {};
+            setSelectedGoal(workoutInfo.goal || '');
+            setSelectedLevel(workoutInfo.level || '');
+            setLoading(false);
         }
-    }, [router]); // Empty dependency to run once on mount
-
-    // Fetch user data from the check-token API and set default values
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = localStorage.getItem('jwtToken');
-                if (!token) {
-                    router.push('/login'); // Redirect if no token
-                    return;
-                }
-
-                // Fetch user data from the check-token API
-                const response = await axios.get('https://api.varzik.ir/check-token', {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                const { workout_info } = response.data.user;
-
-                // Set default values from workout_info (goal and level)
-                if (workout_info) {
-                    setSelectedGoal(workout_info.goal || '');
-                    setSelectedLevel(workout_info.level || '');
-                }
-            } catch (error) {
-                console.error('Failed to fetch user data:', error);
-                router.push('/login'); // Redirect if fetch fails
-            }
-        };
-
-        fetchData();
-    }, [router]);
+    }, [user, router]);
 
     const handleGoalClick = (goal) => {
         setSelectedGoal(goal);
@@ -61,37 +36,41 @@ function Goal() {
     };
 
     const handleSaveClick = async () => {
-        setIsSubmitting(true); // Disable the save button while submitting
+        setIsSubmitting(true);
 
         try {
             const token = localStorage.getItem('jwtToken');
-            const userWorkoutInfo = JSON.parse(localStorage.getItem('userWorkoutInfo')) || {};
+            const updatedInfo = {
+                ...user.workout_info, // Merge existing workout_info
+                goal: selectedGoal,
+                level: selectedLevel,
+            };
 
-            // Extend workout info with goal and level
-            const updatedInfo = { ...userWorkoutInfo, goal: selectedGoal, level: selectedLevel };
-            localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo));
-
-            // Send updated data to the backend
+            // Update backend with the new workout info
             await axios.put('https://api.varzik.ir/user/update-workout-info', updatedInfo, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            // Show success message
-            setSuccessMessage('اطلاعات با موفقیت بروزرسانی شد.');
+            // Update the context and localStorage
+            login({
+                ...user,
+                workout_info: updatedInfo,
+            });
+            localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo));
 
-            // Wait for 2 seconds before redirecting
+            setSuccessMessage('اطلاعات با موفقیت بروزرسانی شد.');
             setTimeout(() => {
-                router.push("/user"); // Redirect to the user page
+                router.push("/user");
             }, 2000);
         } catch (err) {
             console.error('Failed to update workout info:', err);
         } finally {
-            setIsSubmitting(false); // Enable the save button
+            setIsSubmitting(false);
         }
     };
 
     if (loading) {
-        return <div>در حال بارگذاری...</div>; // Display loading message while fetching data
+        return <div>در حال بارگذاری...</div>;
     }
 
     return (

@@ -18,7 +18,6 @@ const slides1 = [
 function Plan() {
     return (
         
-
         <div>
 
 
