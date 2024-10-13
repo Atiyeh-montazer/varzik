@@ -1,53 +1,54 @@
+"use client";
 
-"use client"
-
-import Image from 'next/image'
-import React from 'react'
+import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
 import { GiExitDoor } from "react-icons/gi";
 import { BsInstagram } from "react-icons/bs";
 import { SiTelegram } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneFlip } from "react-icons/fa6";
-import Link from 'next/link'
-import axios from 'axios'
+import Link from 'next/link';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
+import { login, setUserFromStorage } from '@/redux/userSlice'; // Import login action
 
 function Login() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  const dispatch = useDispatch(); // Use dispatch to trigger actions
   const { push } = useRouter();
+  const router = useRouter();
+  
+  // Set user info from localStorage if available
+  useEffect(() => {
+    dispatch(setUserFromStorage()); // Load user from storage on first render
 
-  const router = useRouter(); // Use Next.js router
-    useEffect(() => {
-        // Check if user info exists in localStorage
-        const userInfo = localStorage.getItem('userInfo');
-        if (userInfo) {
-            // If no user info, redirect to login
-            router.push('/user');
-        }
-    }, [router]); // Empty dependency to run once on mount
+    const userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      router.push('/user'); // Redirect if user is already logged in
+    }
+  }, [dispatch, router]);
 
   const handleLogin = async () => {
     if (!phone || !email) {
-      setError('ایمیل یا شماره تلفن را پر کنید')
+      setError('ایمیل یا شماره تلفن را پر کنید');
       return;
     }
 
     try {
       let resp = await axios.post('https://api.varzik.ir/login', { email, phone });
-      push(`/validate-otp?phone=${phone}&email=${email}`)
-    }
-    catch (error) {
-      // Show the error message from the server
+      // Redirect to OTP validation page
+      push(`/validate-otp?phone=${phone}&email=${email}`);
+    } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         setError(`درخواست کد با خطا مواجه شد: ${error.response.data.message}`);
       } else {
-          setError('درخواست کد با خطا مواجه شد: ' + error.message);
+        setError('درخواست کد با خطا مواجه شد: ' + error.message);
       }
     }
-  }
+  };
 
   return (
     <div className='flex flex-col items-center'>
@@ -126,4 +127,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Login;

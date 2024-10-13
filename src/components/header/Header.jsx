@@ -1,15 +1,17 @@
 // components/header/Header.js
 "use client";
 
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import Image from 'next/image';
-import { UserContext } from '@/contexts/userContext'; // Import the UserContext
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout, setUserFromStorage } from '@/redux/userSlice'; // Import the actions from Redux
 
 function Header() {
-  const { user, login, logout } = useContext(UserContext); // Access user, login, logout from the context
+  const user = useSelector((state) => state.user.userInfo); // Get user from Redux store
+  const dispatch = useDispatch(); // Get dispatch to send actions
   const pathName = usePathname();
   const { push } = useRouter();
 
@@ -33,8 +35,8 @@ function Header() {
         if (response.status === 200 && response.data.user) {
           const latestUserInfo = response.data.user;
 
-          // Update the context and local storage with the latest user info
-          login(latestUserInfo);
+          // Dispatch login action to update Redux state
+          dispatch(login(latestUserInfo));
         } else {
           // Handle case when token is invalid
           push('/login');
@@ -45,8 +47,22 @@ function Header() {
       }
     };
 
-    fetchUserInfo();
-  }, [push, login]);
+    // Load user info from local storage on mount
+    if (!user) {
+      dispatch(setUserFromStorage());
+    }
+
+    // Fetch the latest user info from API
+    if (!user) {
+      fetchUserInfo();
+    }
+  }, [user, push, dispatch]);
+
+  // Logout function
+  const handleLogout = () => {
+    dispatch(logout()); // Dispatch logout action to Redux
+    push('/login'); // Redirect to login after logout
+  };
 
   return (
     <div className='top-0 left-0 z-50 bg-[#331832] shadow-2xl w-full text-center py-1'>
@@ -74,7 +90,7 @@ function Header() {
           {pathName !== '/login' && user && (
             <button
               className='hover:bg-gradient-to-r w-32 h-11 border focus:bg-pink-700 mt-4 text-white border-x-4 rounded-full mr-3 mb-3'
-              onClick={logout}
+              onClick={handleLogout}
             >
               خروج
             </button>

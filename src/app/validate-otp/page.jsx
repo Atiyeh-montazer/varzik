@@ -2,29 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Use router for navigation
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux'; // Import useDispatch from Redux
+import { login } from '@/redux/userSlice'; // Import login action from Redux
 
 function Validateotp() {
     const [otp, setOtp] = useState(['', '', '', '']); // Initialize OTP with 4 values
     const [error, setError] = useState('');
     const searchParams = useSearchParams();
-    const [token, setToken] = useState(null);
-
     const phone = searchParams.get('phone') ?? "0";
     const email = searchParams.get('email') ?? "";
-
     const router = useRouter(); // Use Next.js router
+    const dispatch = useDispatch(); // Use Redux's useDispatch to dispatch actions
 
-    useEffect(() => {
-        // Check if user info exists in localStorage
-        const userInfo = localStorage.getItem('userInfo');
-        if (userInfo) {
-            // If no user info, redirect to login
-            router.push('/user');
-        }
-    }, [router]); // Empty dependency to run once on mount
-
-    // UseEffect to automatically trigger validation when the OTP array is fully filled
+    // Automatically trigger validation when the OTP array is fully filled
     useEffect(() => {
         if (otp.every((value) => value !== '')) {
             validateCode(); // Trigger validation only when all fields are filled
@@ -38,45 +29,42 @@ function Validateotp() {
             return;
         }
 
-        // [3, 4, 5, 6]
-        // 3456
         let finalCode = otp.join(''); // Concatenate the OTP values
 
         try {
-            let resp = await axios.post('https://api.varzik.ir/validate-otp', { otp: finalCode, phone: phone });
+            const resp = await axios.post('https://api.varzik.ir/validate-otp', { otp: finalCode, phone });
             const token = resp.data.token;
-            localStorage.setItem('jwtToken', token); // Store the token in local storage
+
+            // Store the token in localStorage for API requests
+            localStorage.setItem('jwtToken', token);
 
             // Call the check-token API to get user info
             checkToken(token);
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
                 setError(`ورود با خطا مواجه شد: ${error.response.data.message}`);
-              } else {
-                  setError('ورود با خطا مواجه شد: ' + error.message);
-              }
+            } else {
+                setError('ورود با خطا مواجه شد: ' + error.message);
+            }
         }
     };
 
     // Call the check-token API to get user information
     const checkToken = async (jwtToken) => {
         try {
-            let userInfoResp = await axios.get('https://api.varzik.ir/check-token', {
+            const userInfoResp = await axios.get('https://api.varzik.ir/check-token', {
                 headers: {
                     Authorization: `Bearer ${jwtToken}` // Send the token in headers
                 }
             });
 
             const userInfo = userInfoResp.data.user;
-            console.log('User Info:', userInfo);
 
-            // Store the user info in localStorage
-            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            // Dispatch the user info to Redux store
+            dispatch(login(userInfo));
 
-            // redirect to user page
+            // Redirect to user page
             router.push("/user");
-
-
         } catch (err) {
             setError('Failed to fetch user info: ' + err);
         }
@@ -86,8 +74,6 @@ function Validateotp() {
     const handleInputChange = (e, index) => {
         const value = e.target.value;
 
-
-        console.log("index>>", index);
         // Only accept numeric input
         if (/^[0-9]?$/.test(value)) {
             const newOtp = [...otp]; // Copy the existing otp array
@@ -101,7 +87,6 @@ function Validateotp() {
         }
     };
 
-
     const resendOtp = async () => {
         try {
             setError(''); // Remove any existing error when resend button is clicked
@@ -110,7 +95,7 @@ function Validateotp() {
 
             // Reset OTP fields
             setOtp(['', '', '', '']);
-            
+
             // Reset countdown and hide the button again
             setCountdown(120);
             setShowResendButton(false); // Hide the resend button after click

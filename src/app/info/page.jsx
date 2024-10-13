@@ -1,15 +1,16 @@
 "use client";
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdOutlineWoman2 } from "react-icons/md";
 import './style.css'; 
 import { IoMdMan } from "react-icons/io";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'; 
-import axios from 'axios';
-import { UserContext } from '@/contexts/userContext'; 
+import { useSelector, useDispatch } from 'react-redux';
+import { updateWorkoutInfo } from '@/redux/userSlice'; // Import the action
 
 function Info() {
-    const { user, login } = useContext(UserContext); 
+    const user = useSelector((state) => state.user.userInfo); // Get user from Redux store
+    const dispatch = useDispatch(); // Dispatch to update the Redux store
     const [selectedGender, setSelectedGender] = useState('');
     const [sliderValue, setSliderValue] = useState(50);  
     const [sliderValue1, setSliderValue1] = useState(50); 
@@ -23,7 +24,7 @@ function Info() {
         if (!user) {
             router.push('/login');
         } else if (isFirstRender) {
-            // Pre-fill the sliders and gender from the user context
+            // Pre-fill the sliders and gender from the Redux store
             if (user.workout_info) {
                 setSliderValue(user.workout_info.weight || 50);
                 setSliderValue1(user.workout_info.height || 50);
@@ -50,20 +51,14 @@ function Info() {
             sex: selectedGender === 'woman' ? 'female' : 'male',
         };
 
-        // Merge the workout info into the user context
-        login({
-            ...user, // Spread current user properties
-            workout_info: updatedWorkoutInfo // Update only workout_info
-        });
-
-        // For debugging purposes, check if the user context has updated properly
-        console.log('Updated User Context:', {
-            ...user,
-            workout_info: updatedWorkoutInfo
-        });
+        // Dispatch the action to update Redux store
+        dispatch(updateWorkoutInfo(updatedWorkoutInfo));
 
         // Optionally update localStorage for redundancy
         localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedWorkoutInfo));
+
+        // Navigate to the next page
+        router.push('/goal');
     };
 
     return (

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaChalkboardTeacher, FaClipboardList } from "react-icons/fa";
 import { BiSolidDish } from "react-icons/bi";
@@ -9,64 +9,64 @@ import Coach from "@/components/Coach";
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { UserContext } from '@/contexts/userContext'; // Import UserContext
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUserPlans, fetchUserDiets, fetchUserCoaches } from '@/redux/userSlice'; // Import your action creators
 
 function User() {
-    const { user } = useContext(UserContext); // Get user data from context
+    const dispatch = useDispatch(); // Hook to dispatch Redux actions
+    const user = useSelector((state) => state.user.userInfo); // Access user data from Redux store
+    const plans = useSelector((state) => state.user.plans); // Access plans from Redux store
+    const diets = useSelector((state) => state.user.diets); // Access diets from Redux store
+    const coaches = useSelector((state) => state.user.coaches); // Access coaches from Redux store
     const [activeComponent, setActiveComponent] = useState('trainning');
-    const [plans, setPlans] = useState([]); 
-    const [diets, setDiets] = useState([]); 
-    const [coaches, setCoaches] = useState([]); 
-    const [loading, setLoading] = useState(true); // Loading state
+    const [loadingData, setLoadingData] = useState(false); // Single loading state for data
+    const [error, setError] = useState(null); // Track errors during fetch
     const router = useRouter();
 
-    // Check for user and redirect to login if not found
+    // Redirect to login if user is not available
     useEffect(() => {
         if (!user) {
-            router.replace('/login'); // Avoid multiple pushes to the history
-        } else {
-            setLoading(false); // Stop loading once user is confirmed
+            router.replace('/login');
         }
     }, [user, router]);
 
-    // Fetch data only if the user exists in context
+    // Fetch plans, diets, or coaches based on active component and user
     useEffect(() => {
         if (user) {
-            const fetchData = async () => {
-                const token = localStorage.getItem('jwtToken');
-                try {
-                    if (activeComponent === 'trainning') {
-                        const response = await axios.get('https://api.varzik.ir/user/plans', {
-                            headers: { Authorization: `Bearer ${token}` },
-                        });
-                        setPlans(response.data.plans);
-                    } else if (activeComponent === 'diet') {
-                        const response = await axios.get('https://api.varzik.ir/user/diets', {
-                            headers: { Authorization: `Bearer ${token}` },
-                        });
-                        setDiets(response.data.diets);
-                    } else if (activeComponent === 'coach') {
-                        const response = await axios.get('https://api.varzik.ir/user/coaches', {
-                            headers: { Authorization: `Bearer ${token}` },
-                        });
-                        setCoaches(response.data.coaches);
-                    }
-                } catch (err) {
-                    console.error('Failed to fetch data:', err);
-                }
-            };
-            fetchData();
+            const token = localStorage.getItem('jwtToken');
+            if (activeComponent === 'trainning') {
+                setLoadingData(true);
+                dispatch(fetchUserPlans(token)) // Dispatch Redux action to fetch plans
+                    .finally(() => setLoadingData(false));
+            } else if (activeComponent === 'diet') {
+                setLoadingData(true);
+                dispatch(fetchUserDiets(token)) // Dispatch Redux action to fetch diets
+                    .finally(() => setLoadingData(false));
+            } else if (activeComponent === 'coach') {
+                setLoadingData(true);
+                dispatch(fetchUserCoaches(token)) // Dispatch Redux action to fetch coaches
+                    .finally(() => setLoadingData(false));
+            }
         }
-    }, [activeComponent, user]);
+    }, [activeComponent, user, dispatch]);
+
+    // Show loading indicator when fetching user or data
+    // if (!user || loadingData) {
+    //     return <div>Loading data...</div>; // Show loading only when necessary
+    // }
+
+    if (error) {
+        return <div>{error}</div>; // Show error message if fetch fails
+    }
 
     return (
         <div className='flex flex-col justify-center items-center'>
-            <div className='relative W-full'>
+            <div className='relative w-full'>
                 <div className=''>
                     <div className='w-32 h-32 rounded-full bg-white m-6 overflow-hidden'>
                         {user && user.profile_pic && (
                             <Image
-                                src={`https://api.varzik.ir${user.profile_pic}`} 
+                                src={`https://api.varzik.ir${user.profile_pic}`}
                                 alt="User Image"
                                 width={128}
                                 height={128}
@@ -110,9 +110,9 @@ function User() {
                     </div>
 
                     <div>
-                        {activeComponent === 'trainning' && <Trainning plans={plans} />} 
-                        {activeComponent === 'diet' && <Diet diets={diets} />} 
-                        {activeComponent === 'coach' && <Coach coaches={coaches} />} 
+                        {activeComponent === 'trainning' && <Trainning plans={plans} />}
+                        {activeComponent === 'diet' && <Diet diets={diets} />}
+                        {activeComponent === 'coach' && <Coach coaches={coaches} />}
                     </div>
                 </div>
             </div>

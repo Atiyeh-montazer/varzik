@@ -1,12 +1,14 @@
 "use client";
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { UserContext } from '@/contexts/userContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateWorkoutInfo } from '@/redux/userSlice'; // Import your Redux action
 
 function Goal() {
-    const { user, login } = useContext(UserContext);
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.userInfo); // Get the user from Redux store
     const [selectedGoal, setSelectedGoal] = useState('');
     const [selectedLevel, setSelectedLevel] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -16,10 +18,10 @@ function Goal() {
 
     useEffect(() => {
         if (!user) {
-            // If user doesn't exist in context, redirect to login
+            // If user doesn't exist in store, redirect to login
             router.push('/login');
         } else {
-            // Check for user workout_info in context or fall back to localStorage
+            // Check for user workout_info in Redux store or fallback to localStorage
             const workoutInfo = user?.workout_info || JSON.parse(localStorage.getItem('userWorkoutInfo')) || {};
             setSelectedGoal(workoutInfo.goal || '');
             setSelectedLevel(workoutInfo.level || '');
@@ -51,11 +53,8 @@ function Goal() {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            // Update the context and localStorage
-            login({
-                ...user,
-                workout_info: updatedInfo,
-            });
+            // Dispatch the action to update Redux store and update localStorage
+            dispatch(updateWorkoutInfo(updatedInfo));
             localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo));
 
             setSuccessMessage('اطلاعات با موفقیت بروزرسانی شد.');
