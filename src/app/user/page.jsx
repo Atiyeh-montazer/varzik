@@ -33,6 +33,7 @@ function User() {
     // Fetch plans, diets, or coaches based on active component and user
     useEffect(() => {
         if (user) {
+            console.log("userinfo in user page", user)
             const token = localStorage.getItem('jwtToken');
             if (activeComponent === 'trainning') {
                 setLoadingData(true);

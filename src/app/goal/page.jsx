@@ -4,7 +4,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateWorkoutInfo } from '@/redux/userSlice'; // Import your Redux action
+import { updateWorkoutInfo, setUserFromStorage } from '@/redux/userSlice'; // Import your Redux action
 
 function Goal() {
     const dispatch = useDispatch();
@@ -13,21 +13,26 @@ function Goal() {
     const [selectedLevel, setSelectedLevel] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); // Set loading to true initially
     const router = useRouter();
+    const [isFirstRender, setIsFirstRender] = useState(true); 
 
     useEffect(() => {
+        // Load user info from localStorage into Redux store on page load
         if (!user) {
-            // If user doesn't exist in store, redirect to login
             router.push('/login');
-        } else {
-            // Check for user workout_info in Redux store or fallback to localStorage
-            const workoutInfo = user?.workout_info || JSON.parse(localStorage.getItem('userWorkoutInfo')) || {};
-            setSelectedGoal(workoutInfo.goal || '');
-            setSelectedLevel(workoutInfo.level || '');
-            setLoading(false);
+        } else if (isFirstRender) {
+            if (user.workout_info) {
+                console.log("cechking user info", user);
+                const workoutInfo = user.workout_info;
+                // Initialize goal and level only if they exist
+                setSelectedGoal(workoutInfo.goal || '');
+                setSelectedLevel(workoutInfo.level || '');
+                setLoading(false); // Set loading to false after data is initialized
+            }
+            setIsFirstRender(false); 
         }
-    }, [user, router]);
+    }, [user, router, isFirstRender]);
 
     const handleGoalClick = (goal) => {
         setSelectedGoal(goal);
@@ -43,19 +48,38 @@ function Goal() {
         try {
             const token = localStorage.getItem('jwtToken');
             const updatedInfo = {
-                ...user.workout_info, // Merge existing workout_info
-                goal: selectedGoal,
-                level: selectedLevel,
-            };
+                username: user.username, // Update username
+                workout_info: {
+                  weight: user.workout_info.weight,
+                  height: user.workout_info.height,
+                  age: user.workout_info.age,
+                  sex: user.workout_info.sex,
+                  goal: selectedGoal,
+                  level: selectedLevel
+                },
+              };
 
+            // Update username if it has changed
+            if (user.username) {
+                console.log("userInfo", updatedInfo);
+                await axios.post('https://api.varzik.ir/user/update-username', { username: user.username }, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+            }
+            
             // Update backend with the new workout info
-            await axios.put('https://api.varzik.ir/user/update-workout-info', updatedInfo, {
+            await axios.put('https://api.varzik.ir/user/update-workout-info', updatedInfo.workout_info, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
             // Dispatch the action to update Redux store and update localStorage
-            dispatch(updateWorkoutInfo(updatedInfo));
-            localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo));
+            try {
+                dispatch(updateWorkoutInfo(updatedInfo));
+            } catch (err) {
+            console.error('Dispatching updateWorkoutInfo failed:', err);
+            }
+
+            localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo.workout_info));
 
             setSuccessMessage('اطلاعات با موفقیت بروزرسانی شد.');
             setTimeout(() => {
@@ -68,6 +92,7 @@ function Goal() {
         }
     };
 
+    // If loading is still true, show a loading message
     if (loading) {
         return <div>در حال بارگذاری...</div>;
     }

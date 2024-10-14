@@ -64,7 +64,13 @@ function Validateotp() {
             dispatch(login(userInfo));
 
             // Redirect to user page
-            router.push("/user");
+            if (userInfo.access == 2) {
+                console.log("go to user page");
+                router.push("/user");
+            } else if (userInfo.access == 1){
+                router.push("/coach-prof");
+                console.log("go to coach prof page");
+            }
         } catch (err) {
             setError('Failed to fetch user info: ' + err);
         }

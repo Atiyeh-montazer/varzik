@@ -26,8 +26,10 @@ function Login() {
     dispatch(setUserFromStorage()); // Load user from storage on first render
 
     const userInfo = localStorage.getItem('userInfo');
-    if (userInfo) {
+    if (userInfo && userInfo.access == 2) {
       router.push('/user'); // Redirect if user is already logged in
+    } else{
+      router.push('/coach-prof');
     }
   }, [dispatch, router]);
 

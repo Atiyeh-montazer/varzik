@@ -1,4 +1,3 @@
-// components/header/Header.js
 "use client";
 
 import { useEffect } from 'react';
@@ -69,10 +68,18 @@ function Header() {
       <div className='flex justify-between items-center'>
         {/* Profile Picture */}
         <div className='w-16 h-16 rounded-full ml-4 mx-4 bg-white overflow-hidden'>
-          {user && (
+          {user && user.profile_pic ? (
             <Image
               src={`https://api.varzik.ir${user.profile_pic}`}
               alt="User Image"
+              width={64}
+              height={64}
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <Image
+              src="/images/default-profile.jpg" // Add your custom image path here
+              alt="Default User Image"
               width={64}
               height={64}
               className="object-cover w-full h-full"
@@ -81,10 +88,12 @@ function Header() {
         </div>
 
         {/* Username and Weight */}
-        <div className='text-white mr-10'>
-          <h1>{user ? user.username : 'User'}</h1>
-          <h2>وزن: {user ? user.workout_info.weight : '0'}</h2>
-        </div>
+        {user ? (
+          <div className='text-white mr-10'>
+            <h1>{user.username}</h1>
+            <h2>وزن: {user.workout_info?.weight || '0'}</h2>
+          </div>
+        ) : null}
 
         <div>
           {pathName !== '/login' && user && (

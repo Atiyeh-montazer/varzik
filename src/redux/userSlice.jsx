@@ -4,6 +4,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+export const checkTokenAndFetchUser = createAsyncThunk('user/checkToken', async (_, { rejectWithValue }) => {
+  const token = localStorage.getItem('jwtToken');
+  if (!token) {
+    return rejectWithValue('No token found');
+  }
+
+  try {
+    const response = await axios.get('https://api.varzik.ir/check-token', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    return response.data.user; // Assuming the `user` object is part of the response
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    return rejectWithValue('Failed to fetch user info');
+  }
+});
+
 // Async thunks to fetch user data
 export const fetchUserPlans = createAsyncThunk('user/fetchPlans', async (token) => {
     const response = await axios.get('https://api.varzik.ir/user/plans', {
@@ -26,17 +44,40 @@ export const fetchUserCoaches = createAsyncThunk('user/fetchCoaches', async (tok
     return response.data.coaches;
 });
 
+export const updateMedicalRecord = (medicalRecord) => (dispatch, getState) => {
+  const state = getState();
+  
+  const updatedUser = {
+    ...state.user.userInfo,
+    medical_info: medicalRecord, // Store the medical record in the Redux store
+  };
+
+  // Dispatch updated user info
+  dispatch(login(updatedUser));
+
+  // Optionally store it in localStorage
+  localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+};
+
 export const updateWorkoutInfo = (updatedInfo) => (dispatch, getState) => {
   const state = getState();
+  
+  // Merge the updated info (which includes username and workout_info)
   const updatedUser = {
-      ...state.user.userInfo,
-      workout_info: updatedInfo
+    ...state.user.userInfo,
+    ...updatedInfo,  // This includes both username and workout_info
   };
+
+  // Dispatch the updated user info to Redux
   dispatch(login(updatedUser));
+
+  // Optionally update localStorage for redundancy
+  localStorage.setItem('userInfo', JSON.stringify(updatedUser));
 };
 
 const initialState = {
   userInfo: null,
+  medical_info: {},
   plans: [],
   diets: [],
   coaches: [],
@@ -57,6 +98,7 @@ const userSlice = createSlice({
       state.plans = [];
       state.diets = [];
       state.coaches = [];
+      state.medical_info = {};
       localStorage.removeItem('userInfo');
       localStorage.removeItem('jwtToken');
     },
@@ -66,9 +108,28 @@ const userSlice = createSlice({
         state.userInfo = JSON.parse(storedUserInfo);
       }
     },
+    updateMedicalRecord: (state, action) => {
+      if (state.userInfo) {
+        state.userInfo.medical_info = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
+      // Fetch user info from check-token API
+      .addCase(checkTokenAndFetchUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(checkTokenAndFetchUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userInfo = action.payload; // Update the userInfo in Redux
+        localStorage.setItem('userInfo', JSON.stringify(action.payload)); // Optional: update localStorage
+      })
+      .addCase(checkTokenAndFetchUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch user info';
+      })
       // Plans
       .addCase(fetchUserPlans.pending, (state) => {
         state.loading = true;

@@ -5,6 +5,7 @@ import './style.css';
 import { IoMdMan } from "react-icons/io";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'; 
+import { FaClipboardUser } from "react-icons/fa6";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateWorkoutInfo } from '@/redux/userSlice'; // Import the action
 
@@ -15,6 +16,7 @@ function Info() {
     const [sliderValue, setSliderValue] = useState(50);  
     const [sliderValue1, setSliderValue1] = useState(50); 
     const [sliderValue2, setSliderValue2] = useState(50); 
+    const [username, setUsername] = useState("");
     const [error, setError] = useState('');
     const [isFirstRender, setIsFirstRender] = useState(true); 
     
@@ -24,6 +26,7 @@ function Info() {
         if (!user) {
             router.push('/login');
         } else if (isFirstRender) {
+            console.log("user info in info page", user);
             // Pre-fill the sliders and gender from the Redux store
             if (user.workout_info) {
                 setSliderValue(user.workout_info.weight || 50);
@@ -31,6 +34,7 @@ function Info() {
                 setSliderValue2(user.workout_info.age || 50);
                 setSelectedGender(user.workout_info.sex === 'male' ? 'man' : 'woman');
             }
+            setUsername(user.username || '');
             setIsFirstRender(false);
         }
     }, [user, router, isFirstRender]); 
@@ -44,18 +48,26 @@ function Info() {
     };
 
     const handleNextClick = () => {
-        const updatedWorkoutInfo = {
-            weight: sliderValue,
-            height: sliderValue1,
-            age: sliderValue2,
-            sex: selectedGender === 'woman' ? 'female' : 'male',
+        console.log("handleNextClick userinfo", user);
+        const updatedUserInfo = {
+            ...user, // Spread the existing user info
+            username: username, // Update the username
+            workout_info: {
+                weight: sliderValue,
+                height: sliderValue1,
+                age: sliderValue2,
+                sex: selectedGender === 'woman' ? 'female' : 'male',
+                goal: user.workout_info.goal,
+                level: user.workout_info.level
+            }
         };
 
         // Dispatch the action to update Redux store
-        dispatch(updateWorkoutInfo(updatedWorkoutInfo));
+        dispatch(updateWorkoutInfo(updatedUserInfo));
 
         // Optionally update localStorage for redundancy
-        localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedWorkoutInfo));
+        localStorage.setItem('userWorkoutInfo', JSON.stringify(user.workout_info));
+        localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
 
         // Navigate to the next page
         router.push('/goal');
@@ -64,6 +76,15 @@ function Info() {
     return (
         <div>
             {error && <p className="text-red-500 text-center">{error}</p>}
+
+            <div className='flex   items-center '>
+
+                <input type='text' placeholder='نام کاربری' value={username} onChange={(e) => { setUsername(e.target.value) }} className='outline-none text-xl   border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-800 w-64 text-right mb-5 m-1' />
+
+                <span className='text-2xl text-gray-800  pb-2'> <FaClipboardUser />
+                </span>
+
+            </div>
 
             <div className='flex justify-center items-center '>
                 <button
