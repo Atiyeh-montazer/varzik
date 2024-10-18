@@ -3,37 +3,34 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateWorkoutInfo, setUserFromStorage } from '@/redux/userSlice'; // Import your Redux action
+import { useAuth } from '@/providers/auth_provider';
 
 function Goal() {
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.userInfo); // Get the user from Redux store
     const [selectedGoal, setSelectedGoal] = useState('');
     const [selectedLevel, setSelectedLevel] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [loading, setLoading] = useState(true); // Set loading to true initially
     const router = useRouter();
-    const [isFirstRender, setIsFirstRender] = useState(true); 
-
+    const [user, setUser] = useState(undefined)
+    const auth = useAuth()
     useEffect(() => {
-        // Load user info from localStorage into Redux store on page load
-        if (!user) {
+        if (auth.loading) return
+        if (!auth.user) {
             router.push('/login');
-        } else if (isFirstRender) {
-            if (user.workout_info) {
-                console.log("cechking user info", user);
-                const workoutInfo = user.workout_info;
-                // Initialize goal and level only if they exist
-                setSelectedGoal(workoutInfo.goal || '');
-                setSelectedLevel(workoutInfo.level || '');
-                setLoading(false); // Set loading to false after data is initialized
-            }
-            setIsFirstRender(false); 
+            return
         }
-    }, [user, router, isFirstRender]);
-
+        console.log(auth.user)
+        setUser(auth.user)
+        if (auth.user.workout_info) {
+            console.log("cechking user info", auth.user);
+            const workoutInfo = auth.user.workout_info;
+            // Initialize goal and level only if they exist
+            setSelectedGoal(workoutInfo.goal || '');
+            setSelectedLevel(workoutInfo.level || '');
+            setLoading(false); // Set loading to false after data is initialized
+        }
+    }, [auth]);
     const handleGoalClick = (goal) => {
         setSelectedGoal(goal);
     };
@@ -46,18 +43,19 @@ function Goal() {
         setIsSubmitting(true);
 
         try {
-            const token = localStorage.getItem('jwtToken');
+            const token = localStorage.getItem('user-token');
             const updatedInfo = {
+                ...user, // Spread the existing user info
                 username: user.username, // Update username
                 workout_info: {
-                  weight: user.workout_info.weight,
-                  height: user.workout_info.height,
-                  age: user.workout_info.age,
-                  sex: user.workout_info.sex,
-                  goal: selectedGoal,
-                  level: selectedLevel
+                    weight: user.workout_info.weight,
+                    height: user.workout_info.height,
+                    age: user.workout_info.age,
+                    sex: user.workout_info.sex,
+                    goal: selectedGoal,
+                    level: selectedLevel
                 },
-              };
+            };
 
             // Update username if it has changed
             if (user.username) {
@@ -66,21 +64,12 @@ function Goal() {
                     headers: { Authorization: `Bearer ${token}` },
                 });
             }
-            
+
             // Update backend with the new workout info
             await axios.put('https://api.varzik.ir/user/update-workout-info', updatedInfo.workout_info, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-
-            // Dispatch the action to update Redux store and update localStorage
-            try {
-                dispatch(updateWorkoutInfo(updatedInfo));
-            } catch (err) {
-            console.error('Dispatching updateWorkoutInfo failed:', err);
-            }
-
-            localStorage.setItem('userWorkoutInfo', JSON.stringify(updatedInfo.workout_info));
-
+            auth.setUser(updatedInfo)
             setSuccessMessage('اطلاعات با موفقیت بروزرسانی شد.');
             setTimeout(() => {
                 router.push("/user");

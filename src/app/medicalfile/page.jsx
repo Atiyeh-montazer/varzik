@@ -1,72 +1,84 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { updateMedicalRecord } from '@/redux/userSlice'; // Import Redux action
 import axios from 'axios';
-
+import { useAuth } from '@/providers/auth_provider';
+import { FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { API } from '@/data/api';
+const questions = [
+    { question: 'آیا تا کنون پزشک شما اشاره کرده است که شما دچار مشکل قلبی هستید و فقط باید فعالیت‌های جسمانی خاصی که توسط پزشک توصیه می‌شود را انجام دهید؟', answer: "false" },
+    { question: 'آیا در هنگام انجام فعالیت‌های جسمانی در قفسه سینه خود احساس درد می‌کنید؟', answer: "false" },
+    { question: 'آیا تاکنون به دلیل سرگیجه تعادل یا هوشیاری خود را از دست داده اید؟', answer: "false" },
+    { question: 'آیا در یک ماه گذشته در حالیکه در حال انجام فعالیت های جسمانی نبوده اید دچار درد قفسه سینه شده اید؟', answer: "false" },
+    { question: 'آیا دچار مشکلات مفصل یا استخوان (به عنوان مثال در کمر, زانو یا لگن) هستید که ممکن است با تغییر در فعالیت جسمانی شما بدتر شود؟', answer: "false" },
+    { question: 'آیا در حال حاضر پزشک برای شما داروهایی به عنوان مثال قرص هایی که با آب بلعیده میشوند تجویز کرده است؟', answer: "false" },
+    { question: 'آیا دچار فشار خون یا مشکلات قلبی هستید؟', answer: "false" },
+    { question: 'آیا هیچ گونه دلیل دیگری برای منع فعالیت جسمانی شما وجود دارد؟', answer: "false" },
+]
 function Medicalfile() {
-    const user = useSelector((state) => state.user.userInfo); // Get user from Redux
-    const dispatch = useDispatch();
+    const [user, setUser] = useState(undefined)
     const router = useRouter();
-
+    const auth = useAuth()
+    const apiCall = useRef(undefined)
     // State to manage checkboxes (default to empty values)
-    const [formValues, setFormValues] = useState({
-        question1: '',
-        question2: '',
-        question3: '',
-        question4: '',
-        question5: '',
-        question6: '',
-        question7: '',
-        question8: '',
-    });
+    const [formValues, setFormValues] = useState([
+        { question: 'آیا تا کنون پزشک شما اشاره کرده است که شما دچار مشکل قلبی هستید و فقط باید فعالیت‌های جسمانی خاصی که توسط پزشک توصیه می‌شود را انجام دهید؟', answer: "false" },
+        { question: 'آیا در هنگام انجام فعالیت‌های جسمانی در قفسه سینه خود احساس درد می‌کنید؟', answer: "false" },
+        { question: 'آیا تاکنون به دلیل سرگیجه تعادل یا هوشیاری خود را از دست داده اید؟', answer: "false" },
+        { question: 'آیا در یک ماه گذشته در حالیکه در حال انجام فعالیت های جسمانی نبوده اید دچار درد قفسه سینه شده اید؟', answer: "false" },
+        { question: 'آیا دچار مشکلات مفصل یا استخوان (به عنوان مثال در کمر, زانو یا لگن) هستید که ممکن است با تغییر در فعالیت جسمانی شما بدتر شود؟', answer: "false" },
+        { question: 'آیا در حال حاضر پزشک برای شما داروهایی به عنوان مثال قرص هایی که با آب بلعیده میشوند تجویز کرده است؟', answer: "false" },
+        { question: 'آیا دچار فشار خون یا مشکلات قلبی هستید؟', answer: "false" },
+        { question: 'آیا هیچ گونه دلیل دیگری برای منع فعالیت جسمانی شما وجود دارد؟', answer: "false" },
+    ]);
 
     // If no user is found, redirect to login
     useEffect(() => {
-        if (!user) {
-            router.push('/login');
-        } else if (user.medical_info) {
-            // Load existing medical info from Redux if available
-            setFormValues(user.medical_info);
+        if (auth.loading) return
+        if (auth.user) {
+            setUser(auth.user)
+            let _formValues = [...formValues]
+            for (var i = 0; i < questions.length; i++) {
+                _formValues[i].answer = auth.user.medical_info.content[i].answer
+            }
+            console.log("_formValues", _formValues)
+            setFormValues(_formValues)
         }
-    }, [user, router]);
+    }, [auth]);
 
     // Handle checkbox changes
-    const handleCheckboxChange = (event) => {
-        const { name, value } = event.target;
-        setFormValues((prevValues) => ({
-            ...prevValues,
-            [name]: value,
-        }));
+    const handleCheckboxChange = (e, index) => {
+        let _formValues = [...formValues]
+        _formValues[index].answer = e.target.value
+        setFormValues(_formValues)
     };
-
     // Handle form submission
     const handleSubmit = async () => {
-        const token = localStorage.getItem('jwtToken');
-
-        const medicalRecordContent = {
-            content: formValues, // Pass the form values as content
-        };
-
         try {
-            // Dispatch the form values to Redux store
-            dispatch(updateMedicalRecord(formValues));
-
-            // Send form values to the backend
-            await axios.put(
-                'https://api.varzik.ir/user/update-medical-record', // Backend API endpoint
-                medicalRecordContent,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
+            apiCall.current = API.auth.request({
+                path: "/user/update-medical-record",
+                method: "put",
+                body: {
+                    content: formValues,
                 }
-            );
-
+            });
+            let response = await apiCall.current.promise;
+            console.log(response)
+            if (!response.isSuccess)
+                throw response;
+            let _authUser = auth.user
+            _authUser.medical_info.content = formValues
+            auth.setUser(_authUser)
             alert('اطلاعات پزشکی با موفقیت ذخیره شد.');
             router.push('/user'); // Redirect to user page after success
-        } catch (error) {
-            console.error('Failed to update medical record:', error);
+
+        }
+        catch (err) {
+            console.error('Failed to update medical record:', err);
             alert('خطا در ذخیره اطلاعات پزشکی');
         }
     };
@@ -74,223 +86,19 @@ function Medicalfile() {
     return (
         <div className="p-4">
             <h1 className="text-center text-2xl mb-6">پرونده پزشکی</h1>
-
-            {/* Question 1 */}
-            <div className="mb-4">
-                <p>آیا تا کنون پزشک شما اشاره کرده است که شما دچار مشکل قلبی هستید و فقط باید فعالیت‌های جسمانی خاصی که توسط پزشک توصیه می‌شود را انجام دهید؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question1"
-                            value="بله"
-                            checked={formValues.question1 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question1"
-                            value="خیر"
-                            checked={formValues.question1 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
-            {/* Question 2 */}
-            <div className="mb-4">
-                <p>آیا در هنگام انجام فعالیت‌های جسمانی در قفسه سینه خود احساس درد می‌کنید؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question2"
-                            value="بله"
-                            checked={formValues.question2 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question2"
-                            value="خیر"
-                            checked={formValues.question2 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
-            {/* Question 3 */}
-            <div className="mb-4">
-                <p>آیا تاکنون به دلیل سرگیجه تعادل یا هوشیاری خود را از دست داده اید؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question3"
-                            value="بله"
-                            checked={formValues.question3 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question3"
-                            value="خیر"
-                            checked={formValues.question3 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
-            {/* Question 4 */}
-            <div className="mb-4">
-                <p>آیا در یک ماه گذشته در حالیکه در حال انجام فعالیت های جسمانی نبوده اید دچار درد قفسه سینه شده اید؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question4"
-                            value="بله"
-                            checked={formValues.question4 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question4"
-                            value="خیر"
-                            checked={formValues.question4 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
-            {/* Question 5 */}
-            <div className="mb-4">
-                <p>آیا دچار مشکلات مفصل یا استخوان (به عنوان مثال در کمر, زانو یا لگن) هستید که ممکن است با تغییر در فعالیت جسمانی شما بدتر شود؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question5"
-                            value="بله"
-                            checked={formValues.question5 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question5"
-                            value="خیر"
-                            checked={formValues.question5 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
-            {/* Question 6 */}
-            <div className="mb-4">
-               <p>آیا در حال حاضر پزشک برای شما داروهایی به عنوان مثال قرص هایی که با آب بلعیده میشوند تجویز کرده است؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question6"
-                            value="بله"
-                            checked={formValues.question6 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question6"
-                            value="خیر"
-                            checked={formValues.question6 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
-            {/* Question 7 */}
-            <div className="mb-4">
-               <p>آیا دچار فشار خون یا مشکلات قلبی هستید؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question7"
-                            value="بله"
-                            checked={formValues.question7 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question7"
-                            value="خیر"
-                            checked={formValues.question7 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
-            {/* Question 8 */}
-            <div className="mb-4">
-               <p>آیا هیچ گونه دلیل دیگری برای منع فعالیت جسمانی شما وجود دارد؟</p>
-                <div>
-                    <label>
-                        <input
-                            type="radio"
-                            name="question8"
-                            value="بله"
-                            checked={formValues.question8 === 'بله'}
-                            onChange={handleCheckboxChange}
-                        />
-                        بله
-                    </label>
-                    <label className="ml-4">
-                        <input
-                            type="radio"
-                            name="question8"
-                            value="خیر"
-                            checked={formValues.question8 === 'خیر'}
-                            onChange={handleCheckboxChange}
-                        />
-                        خیر
-                    </label>
-                </div>
-            </div>
-
+            {formValues.map((element, index) => {
+                return <RadioGroup
+                    defaultValue="false"
+                    row
+                    key={index}
+                    onChange={(e) => handleCheckboxChange(e, index)}
+                    value={element.answer}
+                >
+                    <FormLabel css={css`display:block;width:100%;`} >{element.question}</FormLabel>
+                    <FormControlLabel value={true} control={<Radio css={css`color:white !important;`} />} label="بله" />
+                    <FormControlLabel value={false} control={<Radio css={css`color:white !important;`} />} label="خیر" />
+                </RadioGroup>
+            })}
             {/* Submit and Back Buttons */}
             <div className="flex justify-center space-x-4 mt-8">
                 <Link href="/user">

@@ -1,7 +1,9 @@
-
+"use client"
 import React from 'react'
 import Link from 'next/link'
-function CoachStudents() {
+import { useAuth } from '@/providers/auth_provider'
+export default function CoachStudents() {
+    const auth = useAuth()
     return (
         <div >
             <div className='flex flex-wrap justify-center items-center gap-4  '>
@@ -16,10 +18,10 @@ function CoachStudents() {
                         <span class="text-sm text-gray-500 dark:text-gray-400">پرورش اندام </span>
                         <div class="flex mt-4 mb-2 md:mt-6">
 
-                            <button  className='hover:bg-pink-700  mt-1  w-18 h-8 border  border-x-4 rounded-full mr-1 flex justify-center items-center text-sm' >اطلاعات بیشتر</button>
+                            <button className='hover:bg-pink-700  mt-1  w-18 h-8 border  border-x-4 rounded-full mr-1 flex justify-center items-center text-sm' >اطلاعات بیشتر</button>
 
                             <Link href="/coachinfo">
-                              
+
                             </Link>
                         </div>
                     </div>
@@ -36,7 +38,7 @@ function CoachStudents() {
                         <span class="text-sm text-gray-500 dark:text-gray-400">پرورش اندام </span>
                         <div class="flex mt-4 mb-2 md:mt-6">
 
-                           
+
                             <Link href="/coachinfo">
                                 <button className='hover:bg-pink-700  mt-1  w-18 h-8 border  border-x-4 rounded-full mr-0 flex justify-center items-center text-sm'>اطلاعات بیشتر</button>
                             </Link>
@@ -53,5 +55,3 @@ function CoachStudents() {
         </div>
     )
 }
-
-export default CoachStudents

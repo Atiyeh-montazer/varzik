@@ -34,7 +34,7 @@ function Trainning({ plans }) {
                         <div
                             key={plan.plan_id}
                             className="w-36 px-4 mt-5 ml-3 text-right border bg-pink-200 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
-                           
+
                         >
                             <h5 className="mb-2 text-md font-semibold tracking-tight text-gray-900 dark:text-white">
                                 برنامه : {plan.plan_id}
@@ -42,23 +42,17 @@ function Trainning({ plans }) {
                             <p className="mb-3 font-normal text-gray-500 dark:text-gray-400 text-sm">
                                 تاریخ شروع: {new Date(plan.reg_at).toLocaleDateString('fa-IR')}
                             </p>
-                            <p className="mb-3 font-normal text-gray-500 dark:text-gray-400 text-sm">
-                                نام مربی: {hideEmail(plan.coach_email)}
-                            </p>
-                            <p className="mb-3 font-normal text-gray-500 dark:text-gray-400 text-sm">
-                                وضعیت پیشرفت: {plan.progress ? plan.progress : 'در دسترس نیست'}
-                            </p>
                             
-                    <div className='text-center flex justify-center items-center '>
-                        <Link href="/plan">
-                          <button
-                        className="w-32 h-11 border border-x-4 rounded-full mb-3  hover:bg-pink-700"
-                        
-                    > جزيیات
-                    </button>
-                        </Link>
-                  
-                    </div>
+                            <div className='text-center flex justify-center items-center '>
+                                <Link href={`/plan/${plan.plan_id}`}>
+                                    <button
+                                        className="w-32 h-11 border border-x-4 rounded-full mb-3  hover:bg-pink-700"
+
+                                    > جزيیات
+                                    </button>
+                                </Link>
+
+                            </div>
                         </div>
                     ))
                 ) : (
@@ -66,8 +60,8 @@ function Trainning({ plans }) {
                 )}
             </div>
 
-           
-           
+
+
         </div>
     );
 }

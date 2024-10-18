@@ -26,13 +26,10 @@ function Coach({ coaches }) {
                         onClick={() => openModal(coach)}
                     >
                         <h5 className="mb-2 text-md font-semibold tracking-tight text-gray-900 dark:text-white">
-                            مربی
+                            مربی : {coach.user_coach_id}
                         </h5>
                         <p className="mb-3 font-normal text-gray-500 dark:text-gray-400 text-sm">
                             تاریخ انتخاب: {new Date(coach.choosed_at).toLocaleDateString('fa-IR')}
-                        </p>
-                        <p className="mb-3 font-normal text-gray-500 dark:text-gray-400 text-sm">
-                            اطلاعات: {coach.coach_info && coach.coach_info.grade ? coach.coach_info.grade.substring(0, 30) + '...' : 'ناموجود'}
                         </p>
                     </div>
                 ))
@@ -46,7 +43,7 @@ function Coach({ coaches }) {
                     <div className="bg-white w-80 p-4 rounded-lg shadow-lg relative max-h-96 overflow-y-auto text-right">
                         <h2 className="text-xl font-bold mb-4">جزئیات مربی</h2>
                         <div className="max-h-48 overflow-y-auto pr-2">
-                            <p><strong>:ایمیل</strong> <span className="rtl block"> {selectedCoach.email}</span></p>
+                            <p><strong>:نام</strong> <span className="rtl block"> {selectedCoach.username}</span></p>
                             <p><strong>تلفن:</strong> {selectedCoach.phone}</p>
                             <p><strong>تاریخ انتخاب:</strong> {new Date(selectedCoach.choosed_at).toLocaleDateString('fa-IR')}</p>
                             <p><strong>:اطلاعات مربی</strong></p>

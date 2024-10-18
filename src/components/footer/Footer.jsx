@@ -5,32 +5,44 @@ import { GoHomeFill } from "react-icons/go";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { usePathname } from 'next/navigation'
 import { FaRegEdit } from "react-icons/fa";
+import { useAuth } from "@/providers/auth_provider";
+import { useEffect, useState } from "react";
 
 function Footer() {
     const pathname = usePathname()
-
+    const auth = useAuth()
+    const [user, setUser] = useState(undefined)
+    useEffect(() => {
+        if (auth.loading) return
+        console.log(auth)
+        if (auth.user) setUser(auth.user)
+    }, [auth])
+    useEffect(() => {
+        console.log(user)
+    }, [user])
+    if (!user) return undefined
     return (
         <div className='bottom-0 left-0 z-50 bg-[#331832] shadow-2xl w-full  text-center '>
             <div className='flex justify-center gap-24 mt-4 items-center text-center   '>
 
-                {
-                    pathname == '/edit'
-                        ?
-                        <Link href="/goal">
-                            <button >
-                                <FaRegEdit className={`
+                {user.access == 0 ? pathname == '/edit' ?
+                    <Link href="/goal">
+                        <button >
+                            <FaRegEdit className={`
                             ${pathname == "/goal" ? 'text-green-200' : 'text-white'} 
                             text-4xl shadow hover:shadow-pink-100`} />
-                            </button>
-                        </Link >
-                        :
-                        <Link href="/user">
-                            <button >
-                                <MdDashboard className={`
+                        </button>
+                    </Link >
+                    :
+                    <Link href={user.access == 0 ? `/user` : "/coach-prof"}>
+                        <button >
+                            <MdDashboard className={`
                             ${pathname == "/user" ? 'text-green-200' : 'text-white'} 
                             text-4xl shadow hover:shadow-pink-100`} />
-                            </button>
-                        </Link >
+                        </button>
+                    </Link >
+                    :
+                    undefined
                 }
 
 

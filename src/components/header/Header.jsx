@@ -1,65 +1,24 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import Link from 'next/link';
-import axios from 'axios';
 import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, setUserFromStorage } from '@/redux/userSlice'; // Import the actions from Redux
+import { useAuth } from '@/providers/auth_provider';
 
 function Header() {
-  const user = useSelector((state) => state.user.userInfo); // Get user from Redux store
-  const dispatch = useDispatch(); // Get dispatch to send actions
   const pathName = usePathname();
   const { push } = useRouter();
-
+  const auth = useAuth()
+  const [user, setUser] = useState(undefined)
   // Fetch the latest user info from the check-token API on mount
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const token = localStorage.getItem('jwtToken');
-
-      // If no token is available, redirect to login
-      if (!token) {
-        push('/login');
-        return;
-      }
-
-      try {
-        const response = await axios.get('https://api.varzik.ir/check-token', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        // If the API returns the user data successfully
-        if (response.status === 200 && response.data.user) {
-          const latestUserInfo = response.data.user;
-
-          // Dispatch login action to update Redux state
-          dispatch(login(latestUserInfo));
-        } else {
-          // Handle case when token is invalid
-          push('/login');
-        }
-      } catch (err) {
-        console.error('Failed to fetch user info:', err);
-        push('/login');
-      }
-    };
-
-    // Load user info from local storage on mount
-    if (!user) {
-      dispatch(setUserFromStorage());
-    }
-
-    // Fetch the latest user info from API
-    if (!user) {
-      fetchUserInfo();
-    }
-  }, [user, push, dispatch]);
+    if (auth.loading) return
+    if (auth.user) setUser(auth.user)
+  }, [auth]);
 
   // Logout function
   const handleLogout = () => {
-    dispatch(logout()); // Dispatch logout action to Redux
+    auth.logout()
     push('/login'); // Redirect to login after logout
   };
 
@@ -78,7 +37,7 @@ function Header() {
             />
           ) : (
             <Image
-              src="/images/default-profile.jpg" // Add your custom image path here
+              src="/images/main.svg" // Add your custom image path here
               alt="Default User Image"
               width={64}
               height={64}
@@ -91,7 +50,8 @@ function Header() {
         {user ? (
           <div className='text-white mr-10'>
             <h1>{user.username}</h1>
-            <h2>وزن: {user.workout_info?.weight || '0'}</h2>
+            {user.access != 0 ? undefined :
+              <h2>وزن: {user.workout_info?.weight || '0'}</h2>}
           </div>
         ) : null}
 

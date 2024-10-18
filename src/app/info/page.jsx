@@ -1,43 +1,44 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'; import React, { useState, useEffect } from 'react';
 import { MdOutlineWoman2 } from "react-icons/md";
-import './style.css'; 
+import './style.css';
 import { IoMdMan } from "react-icons/io";
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { FaClipboardUser } from "react-icons/fa6";
-import { useSelector, useDispatch } from 'react-redux';
-import { updateWorkoutInfo } from '@/redux/userSlice'; // Import the action
+import { useAuth } from '@/providers/auth_provider';
+import { Input, InputAdornment } from '@mui/material';
 
 function Info() {
-    const user = useSelector((state) => state.user.userInfo); // Get user from Redux store
-    const dispatch = useDispatch(); // Dispatch to update the Redux store
     const [selectedGender, setSelectedGender] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);  
-    const [sliderValue1, setSliderValue1] = useState(50); 
-    const [sliderValue2, setSliderValue2] = useState(50); 
+    const [sliderValue, setSliderValue] = useState(50);
+    const [sliderValue1, setSliderValue1] = useState(50);
+    const [sliderValue2, setSliderValue2] = useState(50);
     const [username, setUsername] = useState("");
     const [error, setError] = useState('');
-    const [isFirstRender, setIsFirstRender] = useState(true); 
-    
-    const router = useRouter(); 
+    const auth = useAuth()
+    const router = useRouter();
+    const [user, setUser] = useState(undefined)
 
     useEffect(() => {
-        if (!user) {
+        if (auth.loading) return
+        if (!auth.user) {
             router.push('/login');
-        } else if (isFirstRender) {
-            console.log("user info in info page", user);
-            // Pre-fill the sliders and gender from the Redux store
-            if (user.workout_info) {
-                setSliderValue(user.workout_info.weight || 50);
-                setSliderValue1(user.workout_info.height || 50);
-                setSliderValue2(user.workout_info.age || 50);
-                setSelectedGender(user.workout_info.sex === 'male' ? 'man' : 'woman');
-            }
-            setUsername(user.username || '');
-            setIsFirstRender(false);
+            return
         }
-    }, [user, router, isFirstRender]); 
+        setUser(auth.user)
+        console.log("user info in info page", auth.user);
+        if (auth.user.workout_info) {
+            setSliderValue(auth.user.workout_info.weight || 50);
+            setSliderValue1(auth.user.workout_info.height || 50);
+            setSliderValue2(auth.user.workout_info.age || 50);
+            setSelectedGender(auth.user.workout_info.sex === 'male' ? 'man' : 'woman');
+        }
+        setUsername(auth.user.username || '');
+
+    }, [auth]);
 
     const handleSliderChange = (event, setter) => {
         setter(event.target.value);
@@ -61,14 +62,7 @@ function Info() {
                 level: user.workout_info.level
             }
         };
-
-        // Dispatch the action to update Redux store
-        dispatch(updateWorkoutInfo(updatedUserInfo));
-
-        // Optionally update localStorage for redundancy
-        localStorage.setItem('userWorkoutInfo', JSON.stringify(user.workout_info));
-        localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
-
+        auth.setUser(updatedUserInfo)
         // Navigate to the next page
         router.push('/goal');
     };
@@ -76,16 +70,19 @@ function Info() {
     return (
         <div>
             {error && <p className="text-red-500 text-center">{error}</p>}
-
-            <div className='flex   items-center '>
-
-                <input type='text' placeholder='نام کاربری' value={username} onChange={(e) => { setUsername(e.target.value) }} className='outline-none text-xl   border border-t-0 border-r-0 border-l-0  border-b-1  bg-transparent placeholder-gray-800 w-64 text-right mb-5 m-1' />
-
-                <span className='text-2xl text-gray-800  pb-2'> <FaClipboardUser />
-                </span>
-
-            </div>
-
+            <Input
+                id="input-with-icon-adornment"
+                startAdornment={
+                    <InputAdornment position="start">
+                        <span className='text-2xl text-gray-800'>
+                            <FaClipboardUser />
+                        </span>
+                    </InputAdornment>
+                }
+                type='text' placeholder='نام کاربری' value={username} onChange={(e) => { setUsername(e.target.value) }}
+                className='text-xl placeholder-gray-800 w-64 text-right'
+                css={css`justify-self:center;`}
+            />
             <div className='flex justify-center items-center '>
                 <button
                     className={`mt-6 mb-3 w-32 h-11 border border-x-4 rounded-full mr-5 flex justify-center items-center text-4xl ${selectedGender === 'woman' ? 'bg-pink-700' : ''}`}
