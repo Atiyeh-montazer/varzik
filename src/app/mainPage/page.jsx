@@ -86,6 +86,22 @@ function Mainpage() {
         )}
       </EmblaCarousel>
 
+      <EmblaCarousel title="خدمات" options={OPTIONS}>
+        {videos && videos.length > 0 ? (
+          videos.map((video) => (
+            <div key={video.id} className="embla__slide">
+              <video
+                controls
+                className="w-full h-auto rounded-xl mt-6 border border-slate-400"
+                src={`https://api.varzik.ir${video.video_url}`}
+              />
+            </div>
+          ))
+        ) : (
+          <p className="text-center">No videos available</p>
+        )}
+      </EmblaCarousel>
+
     </div>
   )
 }

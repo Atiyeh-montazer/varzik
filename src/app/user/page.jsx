@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/auth_provider';
 import { API } from '@/data/api';
+import { CircularProgress } from '@mui/material';
 
 function User() {
     const auth = useAuth()
@@ -26,10 +27,15 @@ function User() {
     const fileInputRef = useRef(null); // Reference for the file input element
     const router = useRouter();
     const apiCall = useRef(undefined)
+    const [user, setUser] = useState(undefined);
 
     useEffect(() => {
+        setLoadingData(true)
         if (auth.loading) return
-        if (auth.user) setLoadingData(false)
+        if (auth.user){
+            setUser(auth.user);
+            setLoadingData(false)
+        }
         else router.push("/login")
     }, [auth])
 
@@ -86,9 +92,9 @@ function User() {
                                     className="object-cover w-full h-full"
                                 />
                             ) : (
-                                auth.user && auth.user.profile_pic && (
+                                user && user.profile_pic && (
                                     <Image
-                                        src={`https://api.varzik.ir${auth.user.profile_pic}`}
+                                        src={`https://api.varzik.ir${user.profile_pic}`}
                                         alt="User Image"
                                         width={128}
                                         height={128}
@@ -127,7 +133,7 @@ function User() {
 
                         <Link href='/info'>
                             <button className='hover:bg-pink-700 w-32 h-11 border border-x-4 rounded-full ml-3'>
-                                ویرایش
+                                نمایش پروفایل
                             </button>
                         </Link>
                     </div>
@@ -153,9 +159,15 @@ function User() {
                     </div>
 
                     <div>
-                        {activeComponent === 'trainning' && <Trainning plans={auth.user.plans} />}
-                        {activeComponent === 'diet' && <Diet diets={auth.user.diets} />}
-                        {activeComponent === 'coach' && <Coach coaches={auth.user.coaches} />}
+                        {
+                            loadingData ? <CircularProgress></CircularProgress> : 
+                            <>
+                                {activeComponent === 'trainning' && <Trainning plans={user.plans} />}
+                                {activeComponent === 'diet' && <Diet diets={user.diets} />}
+                                {activeComponent === 'coach' && <Coach coaches={user.coaches} />}
+                            </>
+                        }
+
                     </div>
                 </div>
             </div>
