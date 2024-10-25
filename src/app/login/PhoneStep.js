@@ -47,6 +47,7 @@ function Login({ user, setUser, setStep, setRemainingTime }) {
         }
       });
       let response = await apiCall.current.promise;
+      if (!response.isSuccess) throw response
       console.log(response)
       const _user = { ...user }
       _user.phone = phone

@@ -86,7 +86,8 @@ export function AuthProvider({ children }) {
         }
         catch (err) {
             console.log(err)
-            // localStorage.removeItem(LOCAL_STORAGE_USER_TOKEN)
+            localStorage.removeItem(LOCAL_STORAGE_USER_TOKEN)
+            router.push("/login")
             console.log(`failed to fetch user details:`, err);
         } finally {
             setLoading(false);
