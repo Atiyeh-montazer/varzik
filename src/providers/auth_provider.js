@@ -1,5 +1,4 @@
 "use client"
-import { css } from '@emotion/react';
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { API } from "../data/api";
 import { isEmptyString } from "../utils/utils";
@@ -13,7 +12,11 @@ export const AuthContext = createContext({
     token: undefined,
     setUser: (u) => { },
     reloadUser: () => { },
-    logout: () => { }
+    logout: () => { },
+    selectedCoachId: undefined,
+    setSelectedCoachId: (id) => { },
+    selectedCoachLvl: undefined,
+    setSelectedCoachLvl: (lvl) => { },
 })
 export function AuthProvider({ children }) {
     const getLocalStorageToken = () => localStorage.getItem(LOCAL_STORAGE_USER_TOKEN)
@@ -21,6 +24,8 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(undefined);
     const [loading, setLoading] = useState(true);
     const [token, _setToken] = useState(undefined)
+    const [selectedCoachId, setSelectedCoachId] = useState(undefined)
+    const [selectedCoachLvl, setSelectedCoachLvl] = useState(undefined)
     const setToken = (t) => {
         API.auth.userToken = t;
         _setToken(t);
@@ -108,7 +113,10 @@ export function AuthProvider({ children }) {
         if (!isEmptyString(getLocalStorageToken())) {
             checkToken();
         }
-        else setLoading(false)
+        else {
+            router.push("/login");
+            setLoading(false)
+        }
     }, []);
     const value = {
         user,
@@ -116,7 +124,11 @@ export function AuthProvider({ children }) {
         loading,
         reloadUser: checkToken,
         setUser: (u) => setUser(u),
-        logout: () => logout()
+        logout: () => logout(),
+        selectedCoachId,
+        setSelectedCoachId: (id) => setSelectedCoachId(id),
+        selectedCoachLvl,
+        setSelectedCoachLvl: (lvl) => setSelectedCoachLvl(lvl),
     };
     if (loading)
         return (

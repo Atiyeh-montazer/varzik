@@ -151,7 +151,9 @@ function Coachlist() {
                                         <div className="flex mt-4">
                                             <button
                                                 onClick={() => {
-                                                    alert('در حال آماده سازی برنامه تمرینی توسط مربی');
+                                                    auth.setSelectedCoachId(coach.coach_id)
+                                                    auth.setSelectedCoachLvl(selectedLevel)
+                                                    router.push("/get-plan")
                                                 }}
                                                 className="hover:bg-pink-700 w-28 h-10 border border-x-4 rounded-full mr-1 flex justify-center items-center text-sm" // Wider button
                                             >

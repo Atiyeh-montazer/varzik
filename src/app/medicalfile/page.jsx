@@ -1,14 +1,11 @@
 "use client";
-/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { useAuth } from '@/providers/auth_provider';
-import { FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { API } from '@/data/api';
+import MedicalFileComponent from "../../components/shared/MedicalFileComponent"
+
 const questions = [
     { question: 'آیا تا کنون پزشک شما اشاره کرده است که شما دچار مشکل قلبی هستید و فقط باید فعالیت‌های جسمانی خاصی که توسط پزشک توصیه می‌شود را انجام دهید؟', answer: "false" },
     { question: 'آیا در هنگام انجام فعالیت‌های جسمانی در قفسه سینه خود احساس درد می‌کنید؟', answer: "false" },
@@ -51,11 +48,7 @@ function Medicalfile() {
     }, [auth]);
 
     // Handle checkbox changes
-    const handleCheckboxChange = (e, index) => {
-        let _formValues = [...formValues]
-        _formValues[index].answer = e.target.value
-        setFormValues(_formValues)
-    };
+
     // Handle form submission
     const handleSubmit = async () => {
         try {
@@ -84,37 +77,7 @@ function Medicalfile() {
     };
 
     return (
-        <div className="p-4">
-            <h1 className="text-center text-2xl mb-6">پرونده پزشکی</h1>
-            {formValues.map((element, index) => {
-                return <RadioGroup
-                    defaultValue="false"
-                    row
-                    key={index}
-                    onChange={(e) => handleCheckboxChange(e, index)}
-                    value={element.answer}
-                >
-                    <FormLabel css={css`display:block;width:100%;`} >{element.question}</FormLabel>
-                    <FormControlLabel value={true} control={<Radio css={css`color:white !important;`} />} label="بله" />
-                    <FormControlLabel value={false} control={<Radio css={css`color:white !important;`} />} label="خیر" />
-                </RadioGroup>
-            })}
-            {/* Submit and Back Buttons */}
-            <div className="flex justify-center space-x-4 mt-8">
-                <Link href="/user">
-                    <button className="hover:bg-pink-700 w-32 h-11 border border-x-4 rounded-full flex justify-center items-center text-xl">
-                        بازگشت
-                    </button>
-                </Link>
-
-                <button
-                    onClick={handleSubmit}
-                    className="bg-pink-700 text-white rounded-full w-32 h-11 flex justify-center items-center text-xl"
-                >
-                    ذخیره
-                </button>
-            </div>
-        </div>
+        <MedicalFileComponent onSubmit={handleSubmit} formValues={formValues} setFormValues={setFormValues} />
     );
 }
 

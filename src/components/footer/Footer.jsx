@@ -8,6 +8,10 @@ import { FaRegEdit } from "react-icons/fa";
 import { useAuth } from "@/providers/auth_provider";
 import { useEffect, useState } from "react";
 
+import { CgProfile } from "react-icons/cg";
+import { GoGoal } from "react-icons/go";
+import { IoMdList } from "react-icons/io";
+
 function Footer() {
     const pathname = usePathname()
     const auth = useAuth()
@@ -28,18 +32,16 @@ function Footer() {
                 {user.access == 0 ? pathname == '/edit' ?
                     <Link href="/goal">
                         <button >
-                            <FaRegEdit className={`
+                            <GoGoal className={`
                             ${pathname == "/goal" ? 'text-green-200' : 'text-white'} 
                             text-4xl shadow hover:shadow-pink-100`} />
                         </button>
                     </Link >
                     :
                     <Link href={user.access == 0 ? `/user` : "/coach-prof"}>
-                        <button >
-                            <MdDashboard className={`
+                        <CgProfile className={`
                             ${pathname == "/user" ? 'text-green-200' : 'text-white'} 
                             text-4xl shadow hover:shadow-pink-100`} />
-                        </button>
                     </Link >
                     :
                     undefined
@@ -56,7 +58,7 @@ function Footer() {
 
                 <Link href="/coach-list">
                     <button >
-                        <FaChalkboardTeacher className={`
+                        <IoMdList className={`
                             ${pathname == "/coach-list" ? 'text-green-200' : 'text-white'} 
                             text-4xl shadow hover:shadow-pink-100`} />
                     </button>

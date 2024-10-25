@@ -1,4 +1,8 @@
 "use client";
+/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
 import EmblaCarousel from '@/components/embla-caousel/EmblaCarousel';
 import '@/components/embla-caousel/assets/css/sandbox.css';
 import './embla.css';
@@ -10,6 +14,12 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw'; // For rendering HTML inside Markdown
 import remarkGfm from 'remark-gfm'; // For rendering GitHub-flavored markdown (tables, etc.)
 import { API } from '@/data/api'
+import React from 'react';
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography,
+  CircularProgress
+} from '@mui/material';
+
 
 const OPTIONS = { loop: true, axis: 'y' };
 
@@ -18,7 +28,10 @@ function Plan({ params }) {
   const [user, setUser] = useState(undefined);
   const [plan, setPlan] = useState(null); // State to hold the plan data
   const [videos, setVideos] = useState([]); // State to hold the video data
+  const [filteredVideos, setFilteredVideos] = useState([]); // State to hold the video data
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(undefined)
+  const [workoutPlan, setWorkoutPlan] = useState(undefined)
   const apiCall = useRef(undefined)
   useEffect(() => {
     if (auth.loading) return;
@@ -30,6 +43,39 @@ function Plan({ params }) {
       router.push("/login");
     }
   }, [auth]);
+  const extractJsonFromText = (text) => {
+    const match = text.match(/```json([\s\S]*?)```/);
+    if (match && match[1]) {
+      try {
+        return JSON.parse(match[1].trim());
+      } catch (error) {
+        console.error("Failed to parse JSON:", error);
+        return null;
+      }
+    }
+    return null;
+  };
+  useEffect(() => {
+    if (!videos || !workoutPlan) return
+    console.log(videos)
+    console.log(workoutPlan)
+    filterVideos()
+  }, [videos, workoutPlan])
+
+
+  const filterVideos = () => {
+    // Gather all exercise names from the workoutPlan
+    const exercises = Object.values(workoutPlan).flat().map(exercise => exercise.exercise);
+
+    // Filter videos based on matching title with exercise names
+    const matchedVideos = videos.filter(video =>
+      exercises.some(exerciseName => video.title.includes(exerciseName))
+    );
+    console.log(matchedVideos)
+    setFilteredVideos(matchedVideos); // Set matched videos to state
+    setLoading(false)
+
+  };
 
   const fetchPlanDetails = async (planId) => {
     try {
@@ -38,28 +84,39 @@ function Plan({ params }) {
         method: "GET"
       })
       let response = await apiCall.current.promise
+      console.log(response)
       if (!response.isSuccess) throw response
       setPlan(response.plan); // Set the plan data
-      setLoading(false);
+      let jsonObj = extractJsonFromText(response.plan.movements)
+      setWorkoutPlan(jsonObj)
     }
     catch (err) {
-      console.error('Failed to fetch the plan details:', error);
+      console.error('Failed to fetch the plan details:', err);
       setLoading(false);
     }
   };
 
-  const fetchVideos = async (planId) => {
+  const fetchVideos = async (level) => {
+
     try {
       apiCall.current = API.auth.request({
-        path: `/user/wikis/${planId}`,
+        path: `/user/wikis/`,
         method: "GET"
-      })
-      let response = await apiCall.current.promise
-      if (!response.isSuccess) throw response
+      });
+      let response = await apiCall.current.promise;
+      console.log(response)
+      if (!response.isSuccess)
+        throw response
       setVideos(response.wikis);
     }
     catch (err) {
-      console.error('Failed to fetch the videos:', err);
+      console.log(err)
+      if (err.error) {
+        setError(`خطا: ${err.error}`);
+      } else {
+        setError('خطا: ' + err.message);
+      }
+      setLoading(false)
     }
   };
 
@@ -82,7 +139,10 @@ function Plan({ params }) {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div css={css`display:flex;flex-direction:column;gap:20px;justify-content:center;align-items:center;align-items:center;min-height:600px;`}>
+    <CircularProgress />
+    <h1>در حال بارگذاری</h1>
+  </div>;
 
   return (
     <>
@@ -91,8 +151,8 @@ function Plan({ params }) {
           <div>
             {/* Embla Carousel to display videos */}
             <EmblaCarousel title="ویکی" options={OPTIONS}>
-              {videos && videos.length > 0 ? (
-                videos.map((video) => (
+              {filteredVideos && filteredVideos.length > 0 ? (
+                filteredVideos.map((video) => (
                   <div key={video.id} className="embla__slide">
                     <video
                       controls
@@ -125,21 +185,49 @@ function Plan({ params }) {
             </h1>
 
             {/* Plan Container with White Background */}
-            <div className="p-6 bg-white shadow-lg rounded-lg" dir="rtl" style={{ textAlign: 'right' }}>
-              <h2 className="text-2xl mb-4">برنامه تمرینی</h2>
+            <div dir="rtl" style={{ textAlign: 'right', paddingBottom: "20px" }}>
 
               {/* Responsive Scrollable Box for Markdown Content */}
-              <div className="w-full overflow-x-auto">
-                <div className="min-w-[600px]"> {/* Ensure the content doesn't shrink */}
+              {/* <div className="w-full overflow-x-auto">
+                <div className="min-w-[600px]"> 
                   <ReactMarkdown
                     rehypePlugins={[rehypeRaw]}
-                    remarkPlugins={[remarkGfm]} // Add support for GitHub-flavored markdown (tables, etc.)
+                    remarkPlugins={[remarkGfm]} 
                     className="table-auto border-collapse border border-gray-400"
                   >
                     {plan.movements}
                   </ReactMarkdown>
                 </div>
-              </div>
+              </div> */}
+              <TableContainer component={Paper} sx={{ maxWidth: 650, margin: 'auto', marginTop: 4 }}>
+                <Typography variant="h6" align="center" sx={{ padding: 2 }}>برنامه تمرینی</Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>روز</TableCell>
+                      <TableCell>تمرین</TableCell>
+                      <TableCell align="right">تعداد ست‌ها</TableCell>
+                      <TableCell align="right">تعداد تکرار</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {Object.entries(workoutPlan).map(([day, exercises], index) => (
+                      exercises.map((exercise, idx) => (
+                        <TableRow key={`${day}-${idx}`}>
+                          {idx === 0 && (
+                            <TableCell rowSpan={exercises.length} align="center">
+                              {day.replace('_', ' ')}
+                            </TableCell>
+                          )}
+                          <TableCell>{exercise.exercise}</TableCell>
+                          <TableCell align="right">{exercise.sets}</TableCell>
+                          <TableCell align="right">{exercise.repetitions}</TableCell>
+                        </TableRow>
+                      ))
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
 
           </div>
