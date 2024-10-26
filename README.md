@@ -13,3 +13,14 @@ pnpm dev
 # or
 bun dev
 ```
+
+
+```
+npm install -D @capacitor/cli
+npm install @capacitor/core @capacitor/ios @capacitor/android
+npx cap init
+npm run build
+npx cap add android
+npx cap sync
+npx cap open android
+```

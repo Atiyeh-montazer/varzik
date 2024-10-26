@@ -18,7 +18,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { CONFIG } from '@/data/config';
 
-export default function page() {
+export default function Page() {
     const router = useRouter(); // Use Next.js router
     const apiCall = useRef(undefined)
     const auth = useAuth()
@@ -92,7 +92,7 @@ export default function page() {
                     </div>
                     :
                     filteredWikis.map((wiki) => {
-                        return <Card id={wiki.id} >
+                        return <Card key={wiki.id} id={wiki.id} >
                             <video
                                 controls
                                 className="w-full h-auto"
